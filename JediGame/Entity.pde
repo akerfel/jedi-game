@@ -6,6 +6,7 @@ public class Entity {
     float maxV;
     boolean isTargeted;
     boolean isGrabbed;
+    int hp;
     
     public Entity(float x, float y) {
         coords = new PVector(x, y);
@@ -14,7 +15,7 @@ public class Entity {
         maxV = 30;
         isTargeted = false;
         isGrabbed = false;
-        
+        hp = 1;
     }
     
     void updatePosition() {
@@ -22,7 +23,7 @@ public class Entity {
         coords.y += v.y;
         
         // friction
-        float frictionFactor = 0.95;
+        float frictionFactor = 0.91;
         v.x *= frictionFactor;
         v.y *= frictionFactor;
         
@@ -48,13 +49,17 @@ public class Entity {
     
     void changeVx(float diffVx) {
         v.x += diffVx;
-        if (v.x > maxV) v.x = maxV;
-        if (v.x < -maxV) v.x = -maxV;
+        //if (v.x > maxV) v.x = maxV;
+        //if (v.x < -maxV) v.x = -maxV;
     }
     
     void changeVy(float diffVy) {
         v.y += diffVy;
-        if (v.y > maxV) v.y = maxV;
-        if (v.y < -maxV) v.y = -maxV;
+        //if (v.y > maxV) v.y = maxV;
+        //if (v.y < -maxV) v.y = -maxV;
+    }
+    
+    boolean isDead() {
+        return hp == 0;    
     }
 }

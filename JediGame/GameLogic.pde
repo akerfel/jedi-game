@@ -1,6 +1,32 @@
+import java.util.Iterator;
+
 void updateLogic() {
     player.move();    
     updateEntities();
+    killCollidingEntities();
+}
+
+void killCollidingEntities() {
+    for (Entity e1 : entities) {
+        for (Entity e2 : entities) {
+            if (e1 != e2 && areColliding(e1, e2)) {
+                e1.hp = 0;
+                e2.hp = 0;
+            }
+        }  
+    }  
+    
+    Iterator<Entity> it = entities.iterator();
+    while(it.hasNext()) {
+        if (it.next().isDead()) {
+            it.remove();    
+        }
+    }
+}
+
+// Returns true if the two supplied entities are colliding
+boolean areColliding(Entity e1, Entity e2) {
+    return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < e1.w/2 + e2.w/2);
 }
 
 void updateEntities() {
@@ -47,56 +73,56 @@ float getAngle(float x1, float y1, float x2, float y2) {
 // TODO: if angle_difference is below a certain amount (40?), then distance to player OR mouse should take precedent.
 //    e.g. if one entity is "right behind" another enemy, then the angle should not matter.
 void markTargetedEntity() {
-    
-    // If an entity is grabbed, then it is also targetd
-    for (Entity entity : entities) {
-        if (entity.isGrabbed) {
-            entity.isTargeted = true;
-            return;
+    if (!entities.isEmpty()) {
+        // If an entity is grabbed, then it is also targetd
+        for (Entity entity : entities) {
+            if (entity.isGrabbed) {
+                entity.isTargeted = true;
+                return;
+            }
         }
-    }
-    
-    // Angles
-    float angleMousePlayer = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
-    float smallestEntityAngleDiff = 1000;
-    Entity targetedEntity = null;
-    
-    // Distance to mouse
-    Entity closestEntity = null;
-    float distClosestEntity = 1000000;
-    
-    for (Entity entity : entities) {
         
         // Angles
-        float angleEntity = getAngle(mouseX, mouseY, entity.coords.x, entity.coords.y);
-        float entityAngleDiff = abs(angleMousePlayer - angleEntity);
-        if (entityAngleDiff < smallestEntityAngleDiff) {
-            smallestEntityAngleDiff = entityAngleDiff;
-            targetedEntity = entity;
-        }
+        float angleMousePlayer = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
+        float smallestEntityAngleDiff = 1000;
+        Entity targetedEntity = null;
         
         // Distance to mouse
-        PVector mouseCoords = new PVector(mouseX, mouseY);
-        float distEntity = mouseCoords.dist(entity.coords);
-        if (distEntity < distClosestEntity) {
-            distClosestEntity = distEntity;
-            closestEntity = entity;
-        }
+        Entity closestEntity = null;
+        float distClosestEntity = 1000000;
         
-    }
-    if (distClosestEntity < 150) {
-        targetedEntity = closestEntity;
+        for (Entity entity : entities) {
+            
+            // Angles
+            float angleEntity = getAngle(mouseX, mouseY, entity.coords.x, entity.coords.y);
+            float entityAngleDiff = abs(angleMousePlayer - angleEntity);
+            if (entityAngleDiff < smallestEntityAngleDiff) {
+                smallestEntityAngleDiff = entityAngleDiff;
+                targetedEntity = entity;
+            }
+            
+            // Distance to mouse
+            PVector mouseCoords = new PVector(mouseX, mouseY);
+            float distEntity = mouseCoords.dist(entity.coords);
+            if (distEntity < distClosestEntity) {
+                distClosestEntity = distEntity;
+                closestEntity = entity;
+            }
+            
+        }
+        if (distClosestEntity < 150) {
+            targetedEntity = closestEntity;
+            targetedEntity.isTargeted = true;
+            return;
+        }
         targetedEntity.isTargeted = true;
-        return;
     }
-    targetedEntity.isTargeted = true;
-    return;
 }
 
 void updateGrabbedEntityVelocity() {
     if (grabbedEntity != null) {
         println(mouseX - pmouseX);
-        float grabbedSpeedFactor = 0.14;
+        float grabbedSpeedFactor = 0.25;
         grabbedEntity.changeVx((mouseX - pmouseX) * grabbedSpeedFactor);
         grabbedEntity.changeVy((mouseY - pmouseY) * grabbedSpeedFactor);
     }
