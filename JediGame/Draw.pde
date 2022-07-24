@@ -17,11 +17,15 @@ void drawPlayer() {
 
 void drawEntity(Entity entity) {
     fill(139, 69, 19);
+    
+    strokeWeight(1); // default
     if (entity.isTargeted) {
-        fill(200, 200, 200);
+        //fill(200, 200, 200);
         //circle(entity.coords.x, entity.coords.y, entity.w * 2);
         //fill(139, 69, 19);
+        //strokeWeight(4);
     }
+    
     if (entity.isGrabbed) {
         fill(240, 0, 0);
     }

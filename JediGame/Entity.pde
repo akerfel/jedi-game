@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Entity {
     PVector coords;
     boolean isLeft, isRight, isUp, isDown;
@@ -18,9 +20,24 @@ public class Entity {
         hp = 1;
     }
     
+    void moveCollidingEntities(ArrayList<Entity> alreadyMovedEntities, float grabbedVx, float grabbedVy) {
+        for (Entity e1 : entities) {
+            if (e1 != this && !alreadyMovedEntities.contains(e1) && areColliding(this, e1)) {
+                e1.coords.x += grabbedVx;
+                e1.coords.y += grabbedVy;
+                alreadyMovedEntities.add(this);
+                e1.moveCollidingEntities(alreadyMovedEntities, grabbedVx, grabbedVy);
+            }
+        }
+    }
+    
     void updatePosition() {
         coords.x += v.x;
         coords.y += v.y;
+        
+        if (!collidingEnemiesShouldDie) {
+            moveCollidingEntities(new ArrayList<Entity>(Arrays.asList(this)), v.x, v.y);
+        }
         
         // friction
         float frictionFactor = 0.91;
@@ -51,6 +68,7 @@ public class Entity {
         v.x += diffVx;
         //if (v.x > maxV) v.x = maxV;
         //if (v.x < -maxV) v.x = -maxV;
+        
     }
     
     void changeVy(float diffVy) {

@@ -3,7 +3,9 @@ import java.util.Iterator;
 void updateLogic() {
     player.move();    
     updateEntities();
-    killCollidingEntities();
+    if (collidingEnemiesShouldDie) {
+        killCollidingEntities();
+    }
 }
 
 void killCollidingEntities() {
