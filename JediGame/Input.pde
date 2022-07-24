@@ -1,3 +1,10 @@
+void mousePressed() {
+    if (mouseButton == LEFT) {
+        float angleMousePlayer = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
+        println(angleMousePlayer);
+    }
+}
+
 void keyPressed() {
     player.setMove(keyCode, true);
 }
@@ -5,9 +12,4 @@ void keyPressed() {
 void keyReleased() {
     player.setMove(keyCode, false);
     
-    if (key == CODED) {
-        if (keyCode == SHIFT) {
-            player.isRunning = false;    
-        }
-    }
 }
