@@ -24,6 +24,8 @@ float getAngle(float x1, float y1, float x2, float y2) {
 // If the mouse is very close to an entity, then it will be targeted.
 // Otherwise, the entity with the smallest angle_difference will be targeted.
 // angle_difference = abs(angle_mouse_player - angle_mouse_entity)
+// TODO: if angle_difference is below a certain amount (40?), then distance to player OR mouse should take precedent.
+//    e.g. if one entity is "right behind" another enemy, then the angle should not matter.
 Entity getTargetedEntity() {
     
     // Mark all entites as not targeted
