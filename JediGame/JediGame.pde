@@ -1,5 +1,6 @@
 Player player;
 ArrayList<Entity> entities;
+Entity grabbedEntity;
 
 void setup() {
     size(1200, 1200);   
@@ -10,6 +11,7 @@ void setup() {
     entities.add(new Entity(800, 300));
     entities.add(new Entity(900, 900));
     entities.add(new Entity(800, 850));
+    grabbedEntity = null;
 }
 
 void draw() {

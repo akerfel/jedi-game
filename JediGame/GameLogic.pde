@@ -1,14 +1,34 @@
 void updateLogic() {
     player.move();    
-    markTargetedEntity();
+    updateEntities();
 }
 
-void markTargetedEntity() {
+void updateEntities() {
+    setAllEntitiesUntargeted();
+    markTargetedEntity();
+    updateGrabbedEntityVelocity();
+    updateEntitiesPositions();
+}
+
+void updateEntitiesPositions() {
+    for (Entity entity : entities) {
+        entity.updatePosition();
+    }
+}
+
+void setAllEntitiesUntargeted() {
     for (Entity entity : entities) {
         entity.isTargeted = false;
     }
-    Entity targetedEntity = getTargetedEntity();
-    targetedEntity.isTargeted = true;
+}
+
+Entity getTargetedEntity() {
+    for (Entity entity : entities) {
+        if (entity.isTargeted) {
+            return entity;    
+        }
+    }
+    return null;
 }
 
 // Gives angle between (x1, y1) and (x2, y2).
@@ -26,17 +46,13 @@ float getAngle(float x1, float y1, float x2, float y2) {
 // angle_difference = abs(angle_mouse_player - angle_mouse_entity)
 // TODO: if angle_difference is below a certain amount (40?), then distance to player OR mouse should take precedent.
 //    e.g. if one entity is "right behind" another enemy, then the angle should not matter.
-Entity getTargetedEntity() {
-    
-    // Mark all entites as not targeted
-    for (Entity entity : entities) {
-        entity.isTargeted = false;
-    }
+void markTargetedEntity() {
     
     // If an entity is grabbed, then it is also targetd
     for (Entity entity : entities) {
         if (entity.isGrabbed) {
-            return entity;    
+            entity.isTargeted = true;
+            return;
         }
     }
     
@@ -68,9 +84,20 @@ Entity getTargetedEntity() {
         }
         
     }
-    if (distClosestEntity < 70) {
+    if (distClosestEntity < 150) {
         targetedEntity = closestEntity;
+        targetedEntity.isTargeted = true;
+        return;
     }
-    
-    return targetedEntity;
+    targetedEntity.isTargeted = true;
+    return;
+}
+
+void updateGrabbedEntityVelocity() {
+    if (grabbedEntity != null) {
+        println(mouseX - pmouseX);
+        float grabbedSpeedFactor = 0.14;
+        grabbedEntity.changeVx((mouseX - pmouseX) * grabbedSpeedFactor);
+        grabbedEntity.changeVy((mouseY - pmouseY) * grabbedSpeedFactor);
+    }
 }
