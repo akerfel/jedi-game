@@ -9,7 +9,7 @@ public class Entity {
     
     public Entity(float x, float y) {
         coords = new PVector(x, y);
-        w = 45;
+        w = 30;
         v = new PVector(0, 0);
         maxV = 30;
         isTargeted = false;
