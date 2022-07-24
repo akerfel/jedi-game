@@ -1,7 +1,13 @@
 void mousePressed() {
     if (mouseButton == LEFT) {
-        float angleMousePlayer = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
-        println(angleMousePlayer);
+        Entity grabbedEntity = getTargetedEntity();
+        grabbedEntity.isGrabbed = true;
+    }
+}
+
+void mouseReleased() {
+    for (Entity entity : entities) {
+        entity.isGrabbed = false;
     }
 }
 

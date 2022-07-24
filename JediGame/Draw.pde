@@ -1,21 +1,27 @@
 void drawEverything() {
     background(200);
     drawPlayer();
-    drawBoxes();
+    drawEntities();
 }
 
-void drawBoxes() {
-    for (Box box : boxes) {
-        drawBox(box);
+void drawEntities() {
+    for (Entity entity : entities) {
+        drawEntity(entity);
     }
 }
 
 void drawPlayer() {
-    fill(255, 0, 0);
+    fill(0, 230, 0);
     circle(player.coords.x, player.coords.y, player.w);
 }
 
-void drawBox(Box box) {
+void drawEntity(Entity entity) {
     fill(139, 69, 19);
-    circle(box.coords.x, box.coords.y, player.w);
+    if (entity.isTargeted) {
+        fill(200, 200, 200);
+    }
+    if (entity.isGrabbed) {
+        fill(240, 0, 0);
+    }
+    circle(entity.coords.x, entity.coords.y, entity.w);
 }
