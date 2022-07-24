@@ -20,6 +20,16 @@ public class Entity {
         hp = 1;
     }
     
+    public Entity(float x, float y, int w) {
+        coords = new PVector(x, y);
+        this.w = w;
+        v = new PVector(0, 0);
+        maxV = 30;
+        isTargeted = false;
+        isGrabbed = false;
+        hp = 1;
+    }
+    
     void moveCollidingEntities(ArrayList<Entity> alreadyMovedEntities, float grabbedVx, float grabbedVy) {
         for (Entity e1 : entities) {
             if (e1 != this && !alreadyMovedEntities.contains(e1) && areColliding(this, e1)) {
