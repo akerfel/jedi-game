@@ -11,6 +11,7 @@ public class Entity {
     boolean isBeingForcePushed;
     int hp;
     float attackChance;
+    color rgbColor;
     
     public Entity(int x, int y, int w) {
         coords = new PVector(x, y);

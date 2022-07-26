@@ -14,8 +14,6 @@ boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clu
 boolean playerCanMove;                        // Default: true.
 boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points
                                                   // by just letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
-
-
 // Player
 int playerSpeed;
 int playerWidth;

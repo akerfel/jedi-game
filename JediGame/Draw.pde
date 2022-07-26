@@ -53,7 +53,8 @@ void drawFPS() {
 }
 
 void drawEntity(Entity entity) {
-    fill(139, 69, 19);
+    //fill(139, 69, 19); // brown box color
+    fill(255);
     
     strokeWeight(1); // default
     
@@ -71,7 +72,7 @@ void drawEntity(Entity entity) {
     }
     
     if (entity.isGrabbed) {
-        fill(240, 0, 0);
+        fill(255, 165, 0);
     }
     circle(entity.coords.x, entity.coords.y, entity.w);
 }
@@ -83,9 +84,10 @@ void drawBullets() {
 }
 
 void drawBullet(Bullet bullet) {
-    fill(0, 0, 255);
+    fill(255, 0, 0);
     circle(bullet.coords.x, bullet.coords.y, bullet.w);
 }
+
 
 void drawPlayer() {
     fill(0, 230, 0);
