@@ -4,6 +4,7 @@ void drawEverything() {
     drawBullets();
     drawPlayer();
     drawScore();
+    drawFPS();
 }
 
 void drawScore() {
@@ -44,6 +45,11 @@ void drawEntities() {
     for (Entity entity : entities) {
         drawEntity(entity);
     }
+}
+
+void drawFPS() {
+  fill(220);
+  text(int(frameRate), 20, 30); 
 }
 
 void drawEntity(Entity entity) {

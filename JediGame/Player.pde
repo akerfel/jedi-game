@@ -3,13 +3,19 @@ public class Player {
     float w; // width
     float speed;
     boolean isLeft, isRight, isUp, isDown;
-    int hp;
+    private int hp;
     
     public Player(float x, float y) {
         coords = new PVector(x, y);
         speed = playerSpeed;
         w = playerWidth;
         hp = 1;
+    }
+    
+    void damage(int damage) {
+        if (!godMode) {
+            hp -= damage;
+        }
     }
     
     void move() {

@@ -50,6 +50,35 @@ void updateEntities() {
     if (collidingEnemiesShouldDie) {
         killCollidingEntities();
     }
+    if (fastEntitiesAreLethal) {
+        killFastCollidingEntities();
+    }
+}
+
+void killCollidingEntities() {
+    for (Entity e1 : entities) {
+        for (Entity e2 : entities) {
+            if (e1 != e2 && areColliding(e1, e2)) {
+                e1.hp = 0;
+                e2.hp = 0;
+            }
+        }  
+    }
+}
+
+void killFastCollidingEntities() {
+    for (Entity e1 : entities) {
+        //println("e1.getSpeed() " + e1.getSpeed());
+        if (e1.getSpeed() > lethalEntitySpeed) {
+            for (Entity e2 : entities) {
+                if (e1 != e2 && areTouching(e1, e2)) {
+                    println("Lethal speed: " + e1.getSpeed() + "/" + lethalEntitySpeed);
+                    e1.hp = 0;
+                    e2.hp = 0;
+                }
+            }    
+        }    
+    }
 }
 
 void updateBullets() {
@@ -70,7 +99,7 @@ void removeDeadEntities() {
     while(it.hasNext()) {
         if (it.next().isDead()) {
             it.remove();    
-            playAudioFile("wilhelmScream.wav");
+            wilhelmScreamSound.play();
             score++;
         }
     }
@@ -88,7 +117,7 @@ void removeDeadBullets() {
 void damagePlayerIfTouchesBullet() {
     for (Bullet bullet : bullets) {
         if (areColliding(player, bullet)) {
-            player.hp--;
+            player.damage(1);
             bullet.hp--; // yes, bullets have hp
         }
     }  
@@ -119,20 +148,14 @@ void makeEntitiesRandomlyAttack() {
     }
 }
 
-void killCollidingEntities() {
-    for (Entity e1 : entities) {
-        for (Entity e2 : entities) {
-            if (e1 != e2 && areColliding(e1, e2)) {
-                e1.hp = 0;
-                e2.hp = 0;
-            }
-        }  
-    }
-}
-
 // Returns true if the two entities are colliding
 boolean areColliding(Entity e1, Entity e2) {
     return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < e1.w/2 + e2.w/2);
+}
+
+// Returns true if the two entities are touching
+boolean areTouching(Entity e1, Entity e2) {
+    return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < 1.15 * (e1.w/2 + e2.w/2));
 }
 
 // Returns true if the entity is collding with the bullet

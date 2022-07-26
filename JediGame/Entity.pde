@@ -22,9 +22,16 @@ public class Entity {
         attackChance = chanceEnemyAttack;
     }
     
+    // Remember: velocity has direction (vector), speed does not (scalar)
+    float getSpeed() {
+        return sqrt(sq(v.x) + sq(v.y));
+    }
+    
     void attack() {
-        bullets.add(new Bullet(this));   
-        playAudioFile("retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/
+        if (!noBullets) {
+            bullets.add(new Bullet(this)); 
+            laserSound.play();
+        }  
     }
     
     void moveCollidingEntities(ArrayList<Entity> alreadyMovedEntities, float grabbedVx, float grabbedVy) {
@@ -76,15 +83,13 @@ public class Entity {
         v.x = resizeFactor * unscaledVx;
         v.y = resizeFactor * unscaledVy;
         
-        float actualSpeed = sqrt(sq(v.x) + sq(v.y));
-        println("actualSpeed: " + actualSpeed);
         //if (v.x > maxV) v.x = maxV;
         //if (v.x < -maxV) v.x = -maxV;
     }
     
     void updatePosition() {
-        v.x *= 0.9;
-        v.y *= 0.9;
+        v.x *= 0.95;
+        v.y *= 0.95;
         coords.x += v.x;
         coords.y += v.y;
         

@@ -1,5 +1,9 @@
 import processing.sound.*; // You need to download this in Processing (Tools -> Add tool -> Libraries -> Install "Sound")
 
+// ### Cheats ###
+boolean godMode;
+boolean noBullets;
+
 // ### Settings ###
 // Player
 int playerSpeed;
@@ -11,11 +15,13 @@ float forcePushInitialSpeed;                  // Default 50? Higher values means
 
 // Entities/Enemies
 float chanceEnemySpawn;
-float chanceEnemyAttack;                     // Set between 0 and 1. Higher value means more frequent attacks. Percentage chance that each enemy attacks each frame. 
+float chanceEnemyAttack;                      // default: 0.012. Set between 0 and 1. Higher value means more frequent attacks. Percentage chance that each enemy attacks each frame. 
 int numStartEnemies;
-int entityWidth;                     
-boolean collidingEnemiesShouldDie;
+int entityWidth;                    
 boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clutter).
+boolean collidingEnemiesShouldDie;
+boolean fastEntitiesAreLethal;
+float lethalEntitySpeed;                      // Only relevant if fastEntitiesAreLethal is true
 
 // Bullets
 int bulletWidth;
@@ -29,9 +35,17 @@ ArrayList<Entity> entities;
 ArrayList<Bullet> bullets;
 PrintWriter output;
 
+// ### Sounds ###
+SoundFile laserSound;
+SoundFile wilhelmScreamSound; 
+
 // This function is called once the game has been launched
 void setup() {
     size(1200, 1200);   
+    
+    // ### Cheats ###
+    godMode = true;
+    noBullets = true;
     
     // ### Settings ###
     // Player
@@ -48,9 +62,11 @@ void setup() {
     entityWidth = 60;      
     targetedEntityShouldBeHighlighted = false; 
     collidingEnemiesShouldDie = false;
+    fastEntitiesAreLethal = true;
+    lethalEntitySpeed = 8;
     
     // Bullets
-    chanceEnemyAttack = 0.012; 
+    chanceEnemyAttack = 0.015;
     bulletWidth = 10;
     bulletSpeed = 13;
     
@@ -59,6 +75,10 @@ void setup() {
     player = new Player(width/2, height/2);
     entities = new ArrayList<Entity>();
     bullets = new ArrayList<Bullet>();
+    
+    // ### Sounds ###
+    laserSound = new SoundFile(this, "retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/;
+    wilhelmScreamSound = new SoundFile(this, "wilhelmScream.wav"); 
     
     // ### Level setup ###
     // Add some entities
@@ -77,9 +97,4 @@ void draw() {
     else {
         drawGameOver();   
     }
-}
-
-void playAudioFile(String audioFileName) {
-    SoundFile soundFile = new SoundFile(this, audioFileName);
-    soundFile.play();
 }
