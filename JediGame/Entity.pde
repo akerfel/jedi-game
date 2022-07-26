@@ -41,6 +41,27 @@ public class Entity {
         }
     }
     
+    // The mouse should be on a straight line stretching from the player to the entity
+    void updateGrabbedPosition() {
+        float targetX = 0;
+        float targetY = 0;
+        
+        float anglePlayerMouse = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
+        float anglePlayerEntity = getAngle(player.coords.x, player.coords.y, coords.x, coords.y);
+        float entityAngleDiff = abs(anglePlayerMouse - anglePlayerEntity);
+        
+        float playerMouseDiffX = player.coords.x - mouseX;
+        float playerMouseDiffY = player.coords.y - mouseY;
+        targetX = player.coords.x - 1.5 * playerMouseDiffX; 
+        targetY = player.coords.y - 1.5 * playerMouseDiffY; 
+        
+        // TODO: should be a smooth change to these coords (i.e. with acceleration)
+        coords.x = targetX;
+        coords.y = targetY;
+        
+    }
+    
+    // NOT USED ATM, replaced by updateGrabbedPosition
     void updatePosition() {
         coords.x += v.x;
         coords.y += v.y;

@@ -34,15 +34,37 @@ boolean areColliding(Entity e1, Entity e2) {
 void updateEntities() {
     setAllEntitiesUntargeted();
     markTargetedEntity();
-    updateGrabbedEntityVelocity();
-    updateEntitiesPositions();
+    
+    if (grabbedEntity != null) {
+        grabbedEntity.updateGrabbedPosition();
+    }
+    //updateGrabbedEntityVelocity();
+    //updateEntitiesPositions();
 }
 
+void updateGrabbedEntityPosition() {
+}
+
+/*
 void updateEntitiesPositions() {
     for (Entity entity : entities) {
         entity.updatePosition();
     }
 }
+
+void updateGrabbedEntityVelocity() {
+    if (grabbedEntity != null) {
+        println(mouseX - pmouseX);
+        float grabbedSpeedFactor = 0.15;
+        
+        //grabbedEntity.coords.x += (mouseX - pmouseX);
+        //grabbedEntity.coords.y += (mouseY - pmouseY);
+        
+        grabbedEntity.changeVx((mouseX - pmouseX) * grabbedSpeedFactor);
+        grabbedEntity.changeVy((mouseY - pmouseY) * grabbedSpeedFactor);
+    }
+}
+*/
 
 void setAllEntitiesUntargeted() {
     for (Entity entity : entities) {
@@ -70,9 +92,8 @@ float getAngle(float x1, float y1, float x2, float y2) {
 }
 
 // If the mouse is very close to an entity, then it will be targeted.
-// Otherwise, the entity with the smallest angle_difference will be targeted.
-// angle_difference = abs(angle_mouse_player - angle_mouse_entity)
-// TODO: if angle_difference is below a certain amount (40?), then distance to player OR mouse should take precedent.
+// Otherwise, the entity with the smallest smallestAngleDiff will be targeted.
+// TODO: if smallestAngleDiff is below a certain amount (40?), then distance to player OR mouse should take precedent.
 //    e.g. if one entity is "right behind" another enemy, then the angle should not matter.
 void markTargetedEntity() {
     if (!entities.isEmpty()) {
@@ -85,8 +106,8 @@ void markTargetedEntity() {
         }
         
         // Angles
-        float angleMousePlayer = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
-        float smallestEntityAngleDiff = 1000;
+        float anglePlayerMouse = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
+        float smallestAngleDiff = 1000;
         Entity targetedEntity = null;
         
         // Distance to mouse
@@ -96,10 +117,10 @@ void markTargetedEntity() {
         for (Entity entity : entities) {
             
             // Angles
-            float angleEntity = getAngle(mouseX, mouseY, entity.coords.x, entity.coords.y);
-            float entityAngleDiff = abs(angleMousePlayer - angleEntity);
-            if (entityAngleDiff < smallestEntityAngleDiff) {
-                smallestEntityAngleDiff = entityAngleDiff;
+            float anglePlayerEntity = getAngle(player.coords.x, player.coords.y, entity.coords.x, entity.coords.y);
+            float angleDiff = abs(anglePlayerMouse - anglePlayerEntity);
+            if (angleDiff < smallestAngleDiff) {
+                smallestAngleDiff = angleDiff;
                 targetedEntity = entity;
             }
             
@@ -112,7 +133,7 @@ void markTargetedEntity() {
             }
             
         }
-        if (distClosestEntity < 150) {
+        if (distClosestEntity < 50) {
             targetedEntity = closestEntity;
             targetedEntity.isTargeted = true;
             return;
@@ -121,11 +142,6 @@ void markTargetedEntity() {
     }
 }
 
-void updateGrabbedEntityVelocity() {
-    if (grabbedEntity != null) {
-        println(mouseX - pmouseX);
-        float grabbedSpeedFactor = 0.25;
-        grabbedEntity.changeVx((mouseX - pmouseX) * grabbedSpeedFactor);
-        grabbedEntity.changeVy((mouseY - pmouseY) * grabbedSpeedFactor);
-    }
+PVector mouseCoords() {
+    return new PVector(mouseX, mouseY);    
 }
