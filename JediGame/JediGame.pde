@@ -23,9 +23,12 @@ float bulletSpeed;
 
 // ### Global variables ###
 boolean gameOver;
+int score;                                    // Number of enemies killed
 Player player;
 ArrayList<Entity> entities;
 ArrayList<Bullet> bullets;
+PrintWriter output;
+
 
 // This function is called once the game has been launched
 void setup() {
@@ -41,14 +44,14 @@ void setup() {
     forcePushInitialSpeed = 50; 
     
     // Entities/Enemies
-    chanceEnemySpawn = 0.007;
-    chanceEnemyAttack = 0.003; 
+    chanceEnemySpawn = 0.01;
     numStartEnemies = 2;
     entityWidth = 60;      
     targetedEntityShouldBeHighlighted = false; 
     collidingEnemiesShouldDie = false;
     
     // Bullets
+    chanceEnemyAttack = 0.012; 
     bulletWidth = 10;
     bulletSpeed = 13;
     
@@ -72,11 +75,8 @@ void draw() {
         updateLogic();
         drawEverything();
     }
-    else if (entities.isEmpty()) {
-        youWonScreen();
-    }
     else {
-        gameOverScreen();   
+        drawGameOver();   
     }
 }
 

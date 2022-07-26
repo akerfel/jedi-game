@@ -3,18 +3,41 @@ void drawEverything() {
     drawEntities();
     drawBullets();
     drawPlayer();
+    drawScore();
 }
 
-void youWonScreen() {
-    fill(0);
-    textSize(50);
-    text("You won", 50, 100); 
+void drawScore() {
+  fill(color(255, 255, 255));
+  textSize(32);
+  text(score, width - 60, 60);
 }
 
-void gameOverScreen() {
-    fill(0);
-    textSize(50);
-    text("Game Over", 50, 100); 
+void drawGameOver() {
+  fill(255, 255, 255);
+  textAlign(CENTER);
+  text("GAME OVER", width/2, 50);
+  fill(0, 200, 0);
+  text("Score: " + score, width/2, 100);
+  fill(255, 255, 255);
+  text("Restart: Enter", width/2, 150);
+  fill(255, 255, 255);
+  text("Highscores:", width/2, 200);
+  drawHighScores();
+}
+
+void drawHighScores() {
+  ArrayList<Integer> highscores = getHighscores();
+  for (int i = 0; i < highscores.size(); i++) {
+    int scoreToPrint = highscores.get(i);
+    if (scoreToPrint == score) {
+        fill(0, 200, 0);
+    }
+    else {
+      fill(255, 255, 255);
+    }
+    text((i+1) + ". " + str(scoreToPrint), width/2, 250 + i * 50);
+  }
+  rectMode(CORNER);
 }
 
 void drawEntities() {

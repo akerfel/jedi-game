@@ -60,7 +60,8 @@ void updateBullets() {
 
 void checkIfGameOver() {
     if (player.isDead()) {
-        gameOver = true;    
+        gameOver = true;  
+        saveCurrentScore();  // will only save if actually is new highscore
     }
 }
 
@@ -70,6 +71,7 @@ void removeDeadEntities() {
         if (it.next().isDead()) {
             it.remove();    
             playAudioFile("wilhelmScream.wav");
+            score++;
         }
     }
 }
