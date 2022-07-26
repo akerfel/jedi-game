@@ -16,10 +16,10 @@ void setup() {
     entities = new ArrayList<Entity>();
     
     // Add some entities
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 2; i++) {
         entities.add(new Entity(random(0, 1000), random(0, 1000)));
     }
-    entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
+    //entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
     
     // Settings
     collidingEnemiesShouldDie = false;

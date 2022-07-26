@@ -2,7 +2,9 @@ void mousePressed() {
     if (mouseButton == LEFT) {
         if (!entities.isEmpty()) {
             Entity targetedEntity = getTargetedEntity();
-            targetedEntity.isGrabbed = true;
+            if (targetedEntity != null) {
+                targetedEntity.isGrabbed = true;
+            }
         }
     }
     
