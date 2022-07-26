@@ -176,7 +176,6 @@ void updateEntityPositions() {
         if (entity.isGrabbed) {
             entity.updateGrabbedVelocity();
         }
-        
         entity.updatePosition();
     }
 }

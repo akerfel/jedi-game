@@ -44,8 +44,8 @@ void setup() {
     size(1200, 1200);   
     
     // ### Cheats ###
-    godMode = true;
-    noBullets = true;
+    godMode = false;
+    noBullets = false;
     
     // ### Settings ###
     // Player
