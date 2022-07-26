@@ -24,7 +24,7 @@ void setup() {
     // Settings
     collidingEnemiesShouldDie = false;
     targetedEntityShouldBeHighlighted = false;    // I prefer false (less visual clutter).
-    grabbedLengthRatio = 1.5;                       // = grabbed_to_player / grabbed_to_mouse. Set to 1 for entity to be at mouse position. 
+    grabbedLengthRatio = 1;                       // = grabbed_to_player / grabbed_to_mouse. Set to 1 for entity to be at mouse position. 
     forcePushInitialSpeed = 50;                   // Default 50? Higher values means stronger push.
 }
 
