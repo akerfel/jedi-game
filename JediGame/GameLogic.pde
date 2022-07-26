@@ -137,12 +137,12 @@ boolean areColliding(Entity e1, Entity e2) {
 
 // Returns true if the entity is collding with the bullet
 boolean areColliding(Entity e, Bullet b) {
-    return (sqrt(sq(abs(e.coords.x - b.coords.x)) + sq(abs(e.coords.y -b.coords.y))) < e.w/2 + b.w/2);
+    return (sqrt(sq(abs(e.coords.x - b.coords.x)) + sq(abs(e.coords.y - b.coords.y))) < e.w/2 + b.w/2);
 }
 
 // Returns true if the bullet is collding with the player
 boolean areColliding(Player p, Bullet b) {
-    return (sqrt(sq(abs(p.coords.x - b.coords.x)) + sq(abs(p.coords.y -b.coords.y))) < p.w/2 + b.w/2);
+    return (sqrt(sq(abs(p.coords.x - b.coords.x)) + sq(abs(p.coords.y - b.coords.y))) < p.w/2 + b.w/2);
 }
 
 void updateEntityPositions() {

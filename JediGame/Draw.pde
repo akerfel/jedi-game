@@ -59,8 +59,8 @@ void drawEntity(Entity entity) {
             //circle(entity.coords.x, entity.coords.y, entity.w * 2);
             
             // highlight version 2: thicker stroke
-            //fill(139, 69, 19);
-            //strokeWeight(4);
+            fill(139, 69, 19);
+            strokeWeight(4);
         }
     }
     

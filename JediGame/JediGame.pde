@@ -29,7 +29,6 @@ ArrayList<Entity> entities;
 ArrayList<Bullet> bullets;
 PrintWriter output;
 
-
 // This function is called once the game has been launched
 void setup() {
     size(1200, 1200);   
