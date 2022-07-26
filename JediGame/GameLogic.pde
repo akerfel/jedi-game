@@ -12,11 +12,35 @@ void updateLogic() {
     checkIfGameOver();
 }
 
+void spawnEnemyOnEdge() {
+    int spawnX = int(random(0, width));
+    int spawnY = int(random(0, height));
+    
+    int randWallNum = int(random(0, 4));
+    
+    switch(randWallNum) {
+      case 0: 
+        spawnY = entityWidth;
+        break;
+      case 1: 
+        spawnY = height - entityWidth;
+        break;
+      case 2: 
+        spawnX = entityWidth;
+        break;
+      case 3: 
+        spawnX = width - entityWidth;
+        break;
+    }
+    
+    entities.add(new Entity(spawnX, spawnY, entityWidth));
+}
+
 void randomlySpawnEnemies() {
     if (random(0, 1) < chanceEnemySpawn) {
         int randX = int(random(0, width));
         int randY = int(random(0, height));
-        entities.add(new Entity(randX, randY, entityWidth));
+        spawnEnemyOnEdge();
     }
 }
 

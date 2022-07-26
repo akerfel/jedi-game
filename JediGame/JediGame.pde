@@ -41,16 +41,16 @@ void setup() {
     forcePushInitialSpeed = 50; 
     
     // Entities/Enemies
-    chanceEnemySpawn = 0.003;
-    chanceEnemyAttack = 0.005; 
+    chanceEnemySpawn = 0.007;
+    chanceEnemyAttack = 0.003; 
     numStartEnemies = 2;
-    entityWidth = 30;      
+    entityWidth = 60;      
     targetedEntityShouldBeHighlighted = false; 
     collidingEnemiesShouldDie = false;
     
     // Bullets
     bulletWidth = 10;
-    bulletSpeed = 8;
+    bulletSpeed = 13;
     
     // ### Global variables ###
     gameOver = false;
@@ -61,9 +61,7 @@ void setup() {
     // ### Level setup ###
     // Add some entities
     for (int i = 0; i < numStartEnemies; i++) {
-        int randX = int(random(0, width));
-        int randY = int(random(0, height));
-        entities.add(new Entity(randX, randY, entityWidth));
+        spawnEnemyOnEdge();
     }
     //entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
 }
