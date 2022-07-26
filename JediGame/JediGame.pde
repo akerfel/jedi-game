@@ -12,7 +12,7 @@ boolean fastEntitiesAreLethal;                // I prefer true. This will make f
 float lethalEntitySpeed;                      // Only relevant if fastEntitiesAreLethal is true
 boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clutter).
 boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points
-                                                  // by just letting enemies kill each other.
+                                                  // by just letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
 
 // Player
 int playerSpeed;
@@ -56,7 +56,7 @@ void setup() {
     size(1200, 1200);   
     
     // ### Cheats ###
-    godMode = true;
+    godMode = false;
     noBullets = false;
     
     // ### Settings ###
@@ -82,8 +82,8 @@ void setup() {
     entityWidth = 60;
     
     // Bullets
-    chanceEnemyAttack = 0.01;
-    bulletWidth = 10;
+    chanceEnemyAttack = 0.005;
+    bulletWidth = 80;
     bulletSpeed = 13;
     
     // ### Dynamic variables ###
