@@ -5,7 +5,8 @@ ArrayList<Entity> entities;
 // Settings
 boolean collidingEnemiesShouldDie;
 boolean targetedEntityShouldBeHighlighted;
-float grabbedLengthRatio;            // = grabbed_to_player / grabbed_to_mouse. Set to 1 for entity to be at mouse position. 
+float grabbedLengthRatio;            
+float forcePushInitialSpeed;
 
 void setup() {
     size(1200, 1200);   
@@ -21,9 +22,10 @@ void setup() {
     entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
     
     // Settings
-    collidingEnemiesShouldDie = true;
+    collidingEnemiesShouldDie = false;
     targetedEntityShouldBeHighlighted = false;    // I prefer false (less visual clutter).
-    grabbedLengthRatio = 1;
+    grabbedLengthRatio = 1.5;                       // = grabbed_to_player / grabbed_to_mouse. Set to 1 for entity to be at mouse position. 
+    forcePushInitialSpeed = 50;                   // Default 50? Higher values means stronger push.
 }
 
 void draw() {

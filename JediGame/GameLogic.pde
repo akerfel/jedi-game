@@ -45,30 +45,7 @@ void updateEntities() {
         
         entity.updatePosition();
     }
-    //updateGrabbedEntityVelocity();
-    //updateEntitiesPositions();
 }
-
-/*
-void updateEntitiesPositions() {
-    for (Entity entity : entities) {
-        entity.updatePosition();
-    }
-}
-
-void updateGrabbedEntityVelocity() {
-    if (grabbedEntity != null) {
-        println(mouseX - pmouseX);
-        float grabbedSpeedFactor = 0.15;
-        
-        //grabbedEntity.coords.x += (mouseX - pmouseX);
-        //grabbedEntity.coords.y += (mouseY - pmouseY);
-        
-        grabbedEntity.changeVx((mouseX - pmouseX) * grabbedSpeedFactor);
-        grabbedEntity.changeVy((mouseY - pmouseY) * grabbedSpeedFactor);
-    }
-}
-*/
 
 void setAllEntitiesUntargeted() {
     for (Entity entity : entities) {
@@ -101,7 +78,7 @@ float getAngle(float x1, float y1, float x2, float y2) {
 //    e.g. if one entity is "right behind" another enemy, then the angle should not matter.
 void markTargetedEntity() {
     if (!entities.isEmpty()) {
-        // If an entity is grabbed, then it is also targetd
+        // If an entity is grabbed, then it is also targeted
         for (Entity entity : entities) {
             if (entity.isGrabbed) {
                 entity.isTargeted = true;
@@ -119,7 +96,6 @@ void markTargetedEntity() {
         float distClosestEntity = 1000000;
         
         for (Entity entity : entities) {
-            
             // Angles
             float anglePlayerEntity = getAngle(player.coords.x, player.coords.y, entity.coords.x, entity.coords.y);
             float angleDiff = abs(anglePlayerMouse - anglePlayerEntity);

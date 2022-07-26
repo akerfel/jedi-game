@@ -56,6 +56,8 @@ public class Entity {
         }
     }
     
+    // The velocity is updated so that entity will move towards (targetX, targetY).
+    // The speed is proportional to how far away the target is from the entity.
     void setVelocityTowardsPosition(float targetX, float targetY) {
         float diffX = targetX - coords.x;
         float diffY = targetY - coords.y;
@@ -64,6 +66,27 @@ public class Entity {
         v.y = diffY * 0.2;
         if (v.x > maxV) v.x = maxV;
         if (v.x < -maxV) v.x = -maxV;
+    }
+    
+    // The velocity is updated so that entity will move towards (targetX, targetY).
+    // The speed is specified as an argument.
+    void setVelocityTowardsPosition(float targetX, float targetY, float speed) {
+        float diffX = targetX - coords.x;
+        float diffY = targetY - coords.y;
+        
+        float unscaledVx = diffX;
+        float unscaledVy = diffY;
+        
+        // This formula was calculated by solving an equation system using the pythagorean theorem.
+        float resizeFactor = speed / (sqrt(sq(unscaledVx) + sq(unscaledVy)));
+        
+        v.x = resizeFactor * unscaledVx;
+        v.y = resizeFactor * unscaledVy;
+        
+        float actualSpeed = sqrt(sq(v.x) + sq(v.y));
+        println("actualSpeed: " + actualSpeed);
+        //if (v.x > maxV) v.x = maxV;
+        //if (v.x < -maxV) v.x = -maxV;
     }
     
     void updatePosition() {
@@ -95,6 +118,6 @@ public class Entity {
         float targetX = player.coords.x + 2 * grabbedLengthRatio * mousePlayerDiffX; 
         float targetY = player.coords.y + 2 * grabbedLengthRatio * mousePlayerDiffY; 
         
-        setVelocityTowardsPosition(targetX, targetY);
+        setVelocityTowardsPosition(targetX, targetY, forcePushInitialSpeed);
     }
 }
