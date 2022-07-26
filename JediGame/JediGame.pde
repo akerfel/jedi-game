@@ -18,6 +18,7 @@ int bulletWidth;
 float bulletSpeed;
 
 // ### Global variables ###
+boolean gameOver;
 Player player;
 ArrayList<Entity> entities;
 ArrayList<Bullet> bullets;
@@ -46,6 +47,7 @@ void setup() {
     bulletSpeed = 8;
     
     // ### Global variables ###
+    gameOver = false;
     player = new Player(width/2, height/2);
     entities = new ArrayList<Entity>();
     bullets = new ArrayList<Bullet>();
@@ -63,6 +65,13 @@ void setup() {
 
 // This function is called 60 times per second
 void draw() {
-    updateLogic();
-    drawEverything();
+    if (!gameOver) {
+        updateLogic();
+        drawEverything();
+    }
+    else {
+        fill(0);
+        textSize(50);
+        text("Game Over", 50, 150);    
+    }
 }

@@ -1,12 +1,26 @@
 import java.util.Iterator;
 
 void updateLogic() {
+    
+    // Move
     player.move();    
     updateEntities();
     updateBulletPositions();
-    killEnemiesWhoTouchBullets();
+    
+    // Damage
+    damagePlayerIfTouchesBullet();
+    damageEnemiesWhoTouchBullets();
+    
+    // Remove dead
     removeDeadEntities();
     removeDeadBullets();
+    checkIfGameOver();
+}
+
+void checkIfGameOver() {
+    if (player.isDead()) {
+        gameOver = true;    
+    }
 }
 
 void removeDeadEntities() {
@@ -27,8 +41,16 @@ void removeDeadBullets() {
     }
 }
 
+void damagePlayerIfTouchesBullet() {
+    for (Bullet bullet : bullets) {
+        if (areColliding(player, bullet)) {
+            player.hp--;
+            bullet.hp--; // yes, bullets have hp
+        }
+    }  
+}
 
-void killEnemiesWhoTouchBullets() {
+void damageEnemiesWhoTouchBullets() {
     for (Entity e : entities) {
         for (Bullet b : bullets) {
             if (areColliding(e, b)) {
@@ -72,7 +94,7 @@ void killCollidingEntities() {
     }
 }
 
-// Returns true if the two supplied entities are colliding
+// Returns true if the two entities are colliding
 boolean areColliding(Entity e1, Entity e2) {
     return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < e1.w/2 + e2.w/2);
 }
@@ -80,6 +102,11 @@ boolean areColliding(Entity e1, Entity e2) {
 // Returns true if the entity is collding with the bullet
 boolean areColliding(Entity e, Bullet b) {
     return (sqrt(sq(abs(e.coords.x - b.coords.x)) + sq(abs(e.coords.y -b.coords.y))) < e.w/2 + b.w/2);
+}
+
+// Returns true if the bullet is collding with the player
+boolean areColliding(Player p, Bullet b) {
+    return (sqrt(sq(abs(p.coords.x - b.coords.x)) + sq(abs(p.coords.y -b.coords.y))) < p.w/2 + b.w/2);
 }
 
 void updateEntityPositions() {

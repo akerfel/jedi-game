@@ -3,11 +3,13 @@ public class Player {
     float w; // width
     float speed;
     boolean isLeft, isRight, isUp, isDown;
+    int hp;
     
     public Player(float x, float y) {
         coords = new PVector(x, y);
         speed = playerSpeed;
         w = playerWidth;
+        hp = 1;
     }
     
     void move() {
@@ -22,6 +24,10 @@ public class Player {
             bullet.coords.x -= v*(int(isRight) - int(isLeft));
             bullet.coords.y -= v*(int(isDown)  - int(isUp));
         }
+    }
+    
+    boolean isDead() {
+        return hp <= 0;    
     }
     
     boolean setMove(final int k, final boolean b) {
