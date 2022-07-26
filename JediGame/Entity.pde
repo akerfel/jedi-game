@@ -8,6 +8,7 @@ public class Entity {
     float maxV;
     boolean isTargeted;
     boolean isGrabbed;
+    boolean isBeingForcePushed;
     int hp;
     float attackChance;
     
@@ -105,6 +106,7 @@ public class Entity {
     
     void initiateForcePush() {
         isGrabbed = false;
+        isBeingForcePushed = true;
         
         float mousePlayerDiffX = mouseX - player.coords.x;
         float mousePlayerDiffY = mouseY - player.coords.y;

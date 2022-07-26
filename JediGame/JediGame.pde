@@ -5,23 +5,28 @@ boolean godMode;
 boolean noBullets;
 
 // ### Settings ###
+
+// Binary gameplay choices
+boolean collidingEnemiesShouldDie;            // I prefer false (high speed is *not* required for this setting).
+boolean fastEntitiesAreLethal;                // I prefer true. This will make fast entites kill other entities at high speeds.
+float lethalEntitySpeed;                      // Only relevant if fastEntitiesAreLethal is true
+boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clutter).
+boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points
+                                                  // by just letting enemies kill each other.
+
 // Player
 int playerSpeed;
 int playerWidth;
 
 // Force powers
 float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_to_mouse. Set to 1 for entity to be at mouse position. 
-float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push.
+float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push
 
 // Entities/Enemies
 float chanceEnemySpawn;
 float chanceEnemyAttack;                      // default: 0.012. Set between 0 and 1. Higher value means more frequent attacks. Percentage chance that each enemy attacks each frame. 
 int numStartEnemies;
 int entityWidth;                    
-boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clutter).
-boolean collidingEnemiesShouldDie;
-boolean fastEntitiesAreLethal;
-float lethalEntitySpeed;                      // Only relevant if fastEntitiesAreLethal is true
 
 // Bullets
 int bulletWidth;
@@ -51,29 +56,33 @@ void setup() {
     size(1200, 1200);   
     
     // ### Cheats ###
-    godMode = false;
+    godMode = true;
     noBullets = false;
     
     // ### Settings ###
+    
+    // Binary gameplay choices
+    collidingEnemiesShouldDie = false;
+    fastEntitiesAreLethal = true;
+    lethalEntitySpeed = 8;
+    targetedEntityShouldBeHighlighted = false;
+    onlyForceControlledEnemiesDieFromBullets = true;
+    
     // Player
     playerSpeed = 7;
     playerWidth = 30;
     
     // Force powers
-    grabbedLengthRatio = 1;    
-    forcePushInitialSpeed = 50; 
+    grabbedLengthRatio = 1;
+    forcePushInitialSpeed = 50;
     
     // Entities/Enemies
     chanceEnemySpawn = 0.01;
     numStartEnemies = 2;
-    entityWidth = 60;      
-    targetedEntityShouldBeHighlighted = false; 
-    collidingEnemiesShouldDie = false;
-    fastEntitiesAreLethal = true;
-    lethalEntitySpeed = 8;
+    entityWidth = 60;
     
     // Bullets
-    chanceEnemyAttack = 0.015;
+    chanceEnemyAttack = 0.01;
     bulletWidth = 10;
     bulletSpeed = 13;
     

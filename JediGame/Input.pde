@@ -21,6 +21,7 @@ void mouseReleased() {
     if (mouseButton == LEFT) {
         for (Entity entity : entities) {
             entity.isGrabbed = false;
+            entity.isBeingForcePushed = true;
         }
     }
 }

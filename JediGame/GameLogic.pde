@@ -53,6 +53,15 @@ void updateEntities() {
     if (fastEntitiesAreLethal) {
         killFastCollidingEntities();
     }
+    unmarkEntitiesWhoAreNoLongerBeingForcePushed();
+}
+
+void unmarkEntitiesWhoAreNoLongerBeingForcePushed() {
+    for (Entity entity : entities) {
+        if (entity.isBeingForcePushed && entity.getSpeed() < 0.05) {
+            entity.isBeingForcePushed = false;
+        }
+    }
 }
 
 void killCollidingEntities() {
@@ -126,9 +135,11 @@ void damagePlayerIfTouchesBullet() {
 void damageEnemiesWhoTouchBullets() {
     for (Entity e : entities) {
         for (Bullet b : bullets) {
-            if (areColliding(e, b)) {
-                e.hp--;
-                b.hp--; // yes, bullets have hp
+            if (!onlyForceControlledEnemiesDieFromBullets || (e.isGrabbed || e.isBeingForcePushed)) {
+                if (areColliding(e, b)) {
+                    e.hp--;
+                    b.hp--; // yes, bullets have hp
+                }
             }
         }  
     }  
