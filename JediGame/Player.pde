@@ -14,8 +14,10 @@ public class Player {
         float v = speed;
         
         // Change coords
-        coords.x += v*(int(isRight) - int(isLeft));
-        coords.y += v*(int(isDown)  - int(isUp));
+        for (Entity entity : entities) {
+            entity.coords.x -= v*(int(isRight) - int(isLeft));
+            entity.coords.y -= v*(int(isDown)  - int(isUp));
+        }
     }
     
     boolean setMove(final int k, final boolean b) {
