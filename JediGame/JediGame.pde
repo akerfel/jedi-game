@@ -9,28 +9,39 @@ boolean noBullets;
 // Binary gameplay choices
 boolean collidingEnemiesShouldDie;            // I prefer false (high speed is *not* required for this setting).
 boolean fastEntitiesAreLethal;                // I prefer true. This will make fast entites kill other entities at high speeds.
-float lethalEntitySpeed;                      // Only relevant if fastEntitiesAreLethal is true
+float lethalEntitySpeed;                      // Only used if fastEntitiesAreLethal is true
 boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clutter).
 boolean playerCanMove;                        // Default: true.
-boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points
-                                                  // by just letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
+boolean grabbedEntitiesSameDistFromPlayer;    // Default: false. If true, grabbed entities will be at a set distance from player.
+float dist_grabbedEntitiesToPlayer;           // Only used if grabbedEntitiesSameDistFromPlayer is true.
+boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points by just
+                                                  //  letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
+                                                  
+
 // Player
 int playerSpeed;
 int playerWidth;
 
 // Force powers
-float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_to_mouse. Set to 1 for entity to be at mouse position. 
+float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_to_mouse. Set 1 for entity to be at mouse position. 
+                                              // Only used if grabbedEntitiesSameDistFromPlayer is false.
 float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push
 
 // Entities/Enemies
 float chanceEnemySpawn;
-float chanceEnemyAttack;                      // default: 0.012. Set between 0 and 1. Higher value means more frequent attacks. Percentage chance that each enemy attacks each frame. 
+float chanceEnemyAttack;                      // default: 0.012. Set between 0 and 1. Higher value means more frequent attacks.
+                                              //  Percentage chance that each enemy attacks each frame. 
 int numStartEnemies;
 
 // Stormtrooper
 int stormtrooperWidth;
 color stormtrooperColor;
 int stormtrooperHp;
+
+// Box
+int boxWidth;
+color boxColor;
+int boxHp;
 
 // Bullets
 int bulletWidth;                              // Really wide bullets encourages using enemies as shields (80?).
@@ -71,6 +82,8 @@ void setup() {
     lethalEntitySpeed = 14;
     targetedEntityShouldBeHighlighted = false;
     playerCanMove = true;                     
+    grabbedEntitiesSameDistFromPlayer = false;
+    dist_grabbedEntitiesToPlayer = 150;
     onlyForceControlledEnemiesDieFromBullets = true;
     
     // Player
@@ -90,8 +103,13 @@ void setup() {
     stormtrooperColor = color(255);
     stormtrooperHp = 1;
     
+    // Box
+    boxWidth = 120;
+    boxColor = color(139, 69, 19);
+    boxHp = 3;
+    
     // Bullets
-    chanceEnemyAttack = 0.005;
+    chanceEnemyAttack = 0.0034;
     bulletWidth = 80;
     bulletSpeed = 9;
     
@@ -110,15 +128,16 @@ void setup() {
     for (int i = 0; i < numStartEnemies; i++) {
         spawnStormtrooperOnEdge();
     }
+    spawnBox(30, 30);
     //entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
 }
 
-// This function is called 60 times per second
+// This function is called once per frame/tick
 void draw() {
   switch(gameState) {
     case GAMEACTIVE:
-      drawEverything();
       updateLogic();
+      drawEverything();
       break;
     case GAMEOVER:
       drawGameOver();

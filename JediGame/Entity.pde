@@ -2,7 +2,6 @@ import java.util.Arrays;
 
 public class Entity {
     PVector coords;
-    boolean isLeft, isRight, isUp, isDown;
     float w; // entity width
     PVector v;
     float maxV;
@@ -14,7 +13,7 @@ public class Entity {
     color rgbColor;
     boolean isEnemy;            // If false, it is just a static object, like a stone
     
-    public Entity(int x, int y, int w, int hp, color rgbColor) {
+    public Entity(int x, int y, int w, int hp, color rgbColor, boolean isEnemy) {
         coords = new PVector(x, y);
         this.w = w;
         v = new PVector(0, 0);
@@ -24,18 +23,12 @@ public class Entity {
         this.hp = hp;
         attackChance = chanceEnemyAttack;
         this.rgbColor = rgbColor;
+        this.isEnemy = isEnemy;
     }
     
     // Remember: velocity has direction (vector), speed does not (scalar)
     float getSpeed() {
         return sqrt(sq(v.x) + sq(v.y));
-    }
-    
-    void attack() {
-        if (!noBullets) {
-            bullets.add(new Bullet(this)); 
-            laserSound.play();
-        }  
     }
     
     void moveCollidingEntities(ArrayList<Entity> alreadyMovedEntities, float grabbedVx, float grabbedVy) {
@@ -51,11 +44,25 @@ public class Entity {
     
     // The mouse should be on a straight line stretching from the player to the entity
     void updateGrabbedVelocity() {
+        float targetX = 0;
+        float targetY = 0;
+        
         float mousePlayerDiffX = mouseX - player.coords.x;
         float mousePlayerDiffY = mouseY - player.coords.y;
         
-        float targetX = player.coords.x + grabbedLengthRatio * mousePlayerDiffX; 
-        float targetY = player.coords.y + grabbedLengthRatio * mousePlayerDiffY; 
+        if (grabbedEntitiesSameDistFromPlayer) {
+            float resizeFactor = dist_grabbedEntitiesToPlayer / (sqrt(sq(mousePlayerDiffX) + sq(mousePlayerDiffY)));
+            
+            float scaledDiffX = resizeFactor * mousePlayerDiffX;
+            float scaledDiffY = resizeFactor * mousePlayerDiffY;
+            
+            targetX = player.coords.x + scaledDiffX; 
+            targetY = player.coords.y + scaledDiffY; 
+        }
+        else {
+            targetX = player.coords.x + grabbedLengthRatio * mousePlayerDiffX; 
+            targetY = player.coords.y + grabbedLengthRatio * mousePlayerDiffY; 
+        }
         
         setVelocityTowardsPosition(targetX, targetY);
     }
@@ -105,7 +112,6 @@ public class Entity {
     boolean isDead() {
         return hp <= 0;    
     }
-    
     
     void initiateForcePush() {
         isGrabbed = false;

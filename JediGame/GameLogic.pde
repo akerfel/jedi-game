@@ -12,9 +12,14 @@ void updateLogic() {
     checkIfGameOver();
 }
 
+// Spawns a box at location (x, y)
+void spawnBox(int x, int y) {
+    entities.add(new Box(x, y));
+}
+
 // Spawns a stormtrooper at location (x, y)
 void spawnStormtrooper(int x, int y) {
-    entities.add(new Entity(x, y, stormtrooperWidth, stormtrooperHp, stormtrooperColor));
+    entities.add(new Stormtrooper(x, y));
 }
 
 void spawnStormtrooperOnEdge() {
@@ -51,10 +56,10 @@ void updateEntities() {
     updateEntityPositions();
     makeEntitiesRandomlyAttack();
     if (collidingEnemiesShouldDie) {
-        killCollidingEntities();
+        damageCollidingEntities();
     }
     if (fastEntitiesAreLethal) {
-        killFastCollidingEntities();
+        damageFastCollidingEntities();
     }
     unmarkEntitiesWhoAreNoLongerBeingForcePushed();
 }
@@ -67,26 +72,26 @@ void unmarkEntitiesWhoAreNoLongerBeingForcePushed() {
     }
 }
 
-void killCollidingEntities() {
+void damageCollidingEntities() {
     for (Entity e1 : entities) {
         for (Entity e2 : entities) {
             if (e1 != e2 && areColliding(e1, e2)) {
-                e1.hp = 0;
-                e2.hp = 0;
+                e1.hp--;
+                e2.hp--;
             }
         }  
     }
 }
 
-void killFastCollidingEntities() {
+void damageFastCollidingEntities() {
     for (Entity e1 : entities) {
         //println("e1.getSpeed() " + e1.getSpeed());
         if (e1.getSpeed() > lethalEntitySpeed) {
             for (Entity e2 : entities) {
                 if (e1 != e2 && areTouching(e1, e2)) {
                     println("Lethal speed: " + e1.getSpeed() + "/" + lethalEntitySpeed);
-                    e1.hp = 0;
-                    e2.hp = 0;
+                    e1.hp--;
+                    e2.hp--;
                 }
             }    
         }    
@@ -156,8 +161,8 @@ void updateBulletPositions() {
 
 void makeEntitiesRandomlyAttack() {
     for (Entity entity : entities) {
-        if (!entity.isGrabbed && random(0, 1) < entity.attackChance) {
-            entity.attack();    
+        if (!entity.isGrabbed && random(0, 1) < entity.attackChance && entity instanceof Enemy) {
+            ((Enemy) entity).attack();    
         }
     }
 }
