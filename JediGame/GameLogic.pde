@@ -12,7 +12,12 @@ void updateLogic() {
     checkIfGameOver();
 }
 
-void spawnEnemyOnEdge() {
+// Spawns a stormtrooper at location (x, y)
+void spawnStormtrooper(int x, int y) {
+    entities.add(new Entity(x, y, stormtrooperWidth, stormtrooperHp, stormtrooperColor));
+}
+
+void spawnStormtrooperOnEdge() {
     int spawnX = int(random(0, width));
     int spawnY = int(random(0, height));
     
@@ -20,27 +25,25 @@ void spawnEnemyOnEdge() {
     
     switch(randWallNum) {
       case 0: 
-        spawnY = entityWidth;
+        spawnY = stormtrooperWidth;
         break;
       case 1: 
-        spawnY = height - entityWidth;
+        spawnY = height - stormtrooperWidth;
         break;
       case 2: 
-        spawnX = entityWidth;
+        spawnX = stormtrooperWidth;
         break;
       case 3: 
-        spawnX = width - entityWidth;
+        spawnX = width - stormtrooperWidth;
         break;
     }
     
-    entities.add(new Entity(spawnX, spawnY, entityWidth));
+    spawnStormtrooper(spawnX, spawnY);
 }
 
 void randomlySpawnEnemies() {
     if (random(0, 1) < chanceEnemySpawn) {
-        int randX = int(random(0, width));
-        int randY = int(random(0, height));
-        spawnEnemyOnEdge();
+        spawnStormtrooperOnEdge();
     }
 }
 

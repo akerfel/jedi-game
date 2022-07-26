@@ -26,7 +26,11 @@ float forcePushInitialSpeed;                  // Default 50? Higher values means
 float chanceEnemySpawn;
 float chanceEnemyAttack;                      // default: 0.012. Set between 0 and 1. Higher value means more frequent attacks. Percentage chance that each enemy attacks each frame. 
 int numStartEnemies;
-int entityWidth;                    
+
+// Stormtrooper
+int stormtrooperWidth;
+color stormtrooperColor;
+int stormtrooperHp;
 
 // Bullets
 int bulletWidth;                              // Really wide bullets encourages using enemies as shields (80?).
@@ -80,7 +84,11 @@ void setup() {
     // Entities/Enemies
     chanceEnemySpawn = 0.01;
     numStartEnemies = 2;
-    entityWidth = 60;
+    
+    // Stormtrooper
+    stormtrooperWidth = 60;
+    stormtrooperColor = color(255);
+    stormtrooperHp = 1;
     
     // Bullets
     chanceEnemyAttack = 0.005;
@@ -100,7 +108,7 @@ void setup() {
     // ### Level setup ###
     // Add some entities
     for (int i = 0; i < numStartEnemies; i++) {
-        spawnEnemyOnEdge();
+        spawnStormtrooperOnEdge();
     }
     //entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
 }

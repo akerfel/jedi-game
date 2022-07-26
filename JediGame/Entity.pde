@@ -12,16 +12,18 @@ public class Entity {
     int hp;
     float attackChance;
     color rgbColor;
+    boolean isEnemy;            // If false, it is just a static object, like a stone
     
-    public Entity(int x, int y, int w) {
+    public Entity(int x, int y, int w, int hp, color rgbColor) {
         coords = new PVector(x, y);
         this.w = w;
         v = new PVector(0, 0);
         maxV = 50;
         isTargeted = false;
         isGrabbed = false;
-        hp = 1;
+        this.hp = hp;
         attackChance = chanceEnemyAttack;
+        this.rgbColor = rgbColor;
     }
     
     // Remember: velocity has direction (vector), speed does not (scalar)
