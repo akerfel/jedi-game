@@ -2,9 +2,18 @@ import java.util.Iterator;
 
 void updateLogic() {
     player.move();    
-    updateEntities();
+    updateEntityPositions();
+    makeEntitiesRandomlyAttack();
     if (collidingEnemiesShouldDie) {
         killCollidingEntities();
+    }
+}
+
+void makeEntitiesRandomlyAttack() {
+    for (Entity entity : entities) {
+        if (!entity.isGrabbed && random(0, 1) < entity.attackChance) {
+            entity.attack();    
+        }
     }
 }
 
@@ -31,16 +40,13 @@ boolean areColliding(Entity e1, Entity e2) {
     return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < e1.w/2 + e2.w/2);
 }
 
-void updateEntities() {
+void updateEntityPositions() {
     setAllEntitiesUntargeted();
     markTargetedEntity();
     
     for (Entity entity : entities) {
         if (entity.isGrabbed) {
             entity.updateGrabbedVelocity();
-        }
-        if (entity.isBeingForcePushed) {
-            entity.stopForcePushIfHitWall();
         }
         
         entity.updatePosition();

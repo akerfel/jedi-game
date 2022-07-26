@@ -9,7 +9,7 @@ public class Entity {
     boolean isTargeted;
     boolean isGrabbed;
     int hp;
-    boolean isBeingForcePushed;
+    float attackChance;
     
     public Entity(float x, float y) {
         coords = new PVector(x, y);
@@ -19,7 +19,6 @@ public class Entity {
         isTargeted = false;
         isGrabbed = false;
         hp = 1;
-        isBeingForcePushed = false;
     }
     
     public Entity(float x, float y, int w) {
@@ -30,6 +29,11 @@ public class Entity {
         isTargeted = false;
         isGrabbed = false;
         hp = 1;
+        attackChance = enemyAttackChance;
+    }
+    
+    void attack() {
+        println("attack! " + random(0, 1));    
     }
     
     void moveCollidingEntities(ArrayList<Entity> alreadyMovedEntities, float grabbedVx, float grabbedVy) {
@@ -45,15 +49,13 @@ public class Entity {
     
     // The mouse should be on a straight line stretching from the player to the entity
     void updateGrabbedVelocity() {
-        if (!isBeingForcePushed) {
-            float mousePlayerDiffX = mouseX - player.coords.x;
-            float mousePlayerDiffY = mouseY - player.coords.y;
-            
-            float targetX = player.coords.x + grabbedLengthRatio * mousePlayerDiffX; 
-            float targetY = player.coords.y + grabbedLengthRatio * mousePlayerDiffY; 
-            
-            setVelocityTowardsPosition(targetX, targetY);
-        }
+        float mousePlayerDiffX = mouseX - player.coords.x;
+        float mousePlayerDiffY = mouseY - player.coords.y;
+        
+        float targetX = player.coords.x + grabbedLengthRatio * mousePlayerDiffX; 
+        float targetY = player.coords.y + grabbedLengthRatio * mousePlayerDiffY; 
+        
+        setVelocityTowardsPosition(targetX, targetY);
     }
     
     // The velocity is updated so that entity will move towards (targetX, targetY).
@@ -104,13 +106,9 @@ public class Entity {
         return hp == 0;    
     }
     
-    void stopForcePushIfHitWall() {
-        isBeingForcePushed = false;
-    }
     
     void initiateForcePush() {
         isGrabbed = false;
-        isBeingForcePushed = true;
         
         float mousePlayerDiffX = mouseX - player.coords.x;
         float mousePlayerDiffY = mouseY - player.coords.y;
