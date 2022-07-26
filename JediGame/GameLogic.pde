@@ -1,20 +1,37 @@
 import java.util.Iterator;
 
 void updateLogic() {
+    randomlySpawnEnemies();
     
-    // Move
     player.move();    
     updateEntities();
-    updateBulletPositions();
+    updateBullets();
     
-    // Damage
-    damagePlayerIfTouchesBullet();
-    damageEnemiesWhoTouchBullets();
-    
-    // Remove dead
     removeDeadEntities();
     removeDeadBullets();
     checkIfGameOver();
+}
+
+void randomlySpawnEnemies() {
+    if (random(0, 1) < chanceEnemySpawn) {
+        int randX = int(random(0, width));
+        int randY = int(random(0, height));
+        entities.add(new Entity(randX, randY, entityWidth));
+    }
+}
+
+void updateEntities() {
+    updateEntityPositions();
+    makeEntitiesRandomlyAttack();
+    if (collidingEnemiesShouldDie) {
+        killCollidingEntities();
+    }
+}
+
+void updateBullets() {
+    updateBulletPositions();
+    damagePlayerIfTouchesBullet();
+    damageEnemiesWhoTouchBullets();
 }
 
 void checkIfGameOver() {
@@ -28,6 +45,7 @@ void removeDeadEntities() {
     while(it.hasNext()) {
         if (it.next().isDead()) {
             it.remove();    
+            playAudioFile("wilhelmScream.wav");
         }
     }
 }
@@ -64,14 +82,6 @@ void damageEnemiesWhoTouchBullets() {
 void updateBulletPositions() {
     for (Bullet bullet : bullets) {
         bullet.updatePosition();    
-    }
-}
-
-void updateEntities() {
-    updateEntityPositions();
-    makeEntitiesRandomlyAttack();
-    if (collidingEnemiesShouldDie) {
-        killCollidingEntities();
     }
 }
 

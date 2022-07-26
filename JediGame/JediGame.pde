@@ -1,3 +1,5 @@
+import processing.sound.*; // You need to download this in Processing (Tools -> Add tool -> Libraries -> Install "Sound")
+
 // ### Settings ###
 // Player
 int playerSpeed;
@@ -8,8 +10,10 @@ float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_t
 float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push.
 
 // Entities/Enemies
-int entityWidth;
-float enemyAttackChance;                      // Set between 0 and 1. Higher value means more frequent attacks. Percentage chance that each enemy attacks each frame. 
+float chanceEnemySpawn;
+float chanceEnemyAttack;                     // Set between 0 and 1. Higher value means more frequent attacks. Percentage chance that each enemy attacks each frame. 
+int numStartEnemies;
+int entityWidth;                     
 boolean collidingEnemiesShouldDie;
 boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clutter).
 
@@ -29,7 +33,7 @@ void setup() {
     
     // ### Settings ###
     // Player
-    playerSpeed = 4;
+    playerSpeed = 7;
     playerWidth = 30;
     
     // Force powers
@@ -37,8 +41,10 @@ void setup() {
     forcePushInitialSpeed = 50; 
     
     // Entities/Enemies
+    chanceEnemySpawn = 0.003;
+    chanceEnemyAttack = 0.005; 
+    numStartEnemies = 2;
     entityWidth = 30;      
-    enemyAttackChance = 0.005; 
     targetedEntityShouldBeHighlighted = false; 
     collidingEnemiesShouldDie = false;
     
@@ -54,8 +60,7 @@ void setup() {
     
     // ### Level setup ###
     // Add some entities
-    entities.add(new Entity(100, 100, 30));
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < numStartEnemies; i++) {
         int randX = int(random(0, width));
         int randY = int(random(0, height));
         entities.add(new Entity(randX, randY, entityWidth));
@@ -69,9 +74,15 @@ void draw() {
         updateLogic();
         drawEverything();
     }
-    else {
-        fill(0);
-        textSize(50);
-        text("Game Over", 50, 150);    
+    else if (entities.isEmpty()) {
+        youWonScreen();
     }
+    else {
+        gameOverScreen();   
+    }
+}
+
+void playAudioFile(String audioFileName) {
+    SoundFile soundFile = new SoundFile(this, audioFileName);
+    soundFile.play();
 }

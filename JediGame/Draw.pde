@@ -5,6 +5,18 @@ void drawEverything() {
     drawPlayer();
 }
 
+void youWonScreen() {
+    fill(0);
+    textSize(50);
+    text("You won", 50, 100); 
+}
+
+void gameOverScreen() {
+    fill(0);
+    textSize(50);
+    text("Game Over", 50, 100); 
+}
+
 void drawEntities() {
     for (Entity entity : entities) {
         drawEntity(entity);

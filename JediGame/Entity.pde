@@ -15,15 +15,16 @@ public class Entity {
         coords = new PVector(x, y);
         this.w = w;
         v = new PVector(0, 0);
-        maxV = 30;
+        maxV = 50;
         isTargeted = false;
         isGrabbed = false;
         hp = 1;
-        attackChance = enemyAttackChance;
+        attackChance = chanceEnemyAttack;
     }
     
     void attack() {
         bullets.add(new Bullet(this));   
+        playAudioFile("retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/
     }
     
     void moveCollidingEntities(ArrayList<Entity> alreadyMovedEntities, float grabbedVx, float grabbedVy) {
@@ -54,8 +55,8 @@ public class Entity {
         float diffX = targetX - coords.x;
         float diffY = targetY - coords.y;
         
-        v.x = diffX * 0.2;
-        v.y = diffY * 0.2;
+        v.x = diffX * 0.4;
+        v.y = diffY * 0.4;
         if (v.x > maxV) v.x = maxV;
         if (v.x < -maxV) v.x = -maxV;
     }
