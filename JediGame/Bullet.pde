@@ -8,30 +8,22 @@ class Bullet {
     Bullet(Entity entity) {
         w = bulletWidth; // must be initialised before coords! 
         setStartCoords(entity);
-        //coords = new PVector(entity.coords.x, entity.coords.y); // this will change, but they are needed for setVelocityTowardsPosition
-        
         setVelocityInPlayerDirection();
         hp = 1;
     }
     
+    // The bullet will spawn facing the player. It must not touch the entity which spawned it, since that would kill the entity.
     void setStartCoords(Entity entity) {
         coords = new PVector(0, 0);
         float diffX = player.coords.x - entity.coords.x;
         float diffY = player.coords.y - entity.coords.y;
-        println("-------");
-        println("diffX: " + diffX);
-        println("diffY: " + diffY);
         
-        // Trigonometry time
+        // Trigonometry time. The bullet spawns at a distance of (1.2 * entity_radius + 1.2 * bullet_radius) from the entity's center.
         float distEntityPlayer = sqrt(sq(diffX) + sq(diffY));
         float distToEntityWidthRatio = (entity.w/2) / distEntityPlayer;
         float distToBulletWidthRatio = (this.w/2) / distEntityPlayer;
-        println("w: " + entity.w);
-        println("distEntityPlayer: " + distEntityPlayer);
-        println("distToWidthRatio: " + distToEntityWidthRatio);
         coords.x = entity.coords.x + 1.2 * diffX * distToEntityWidthRatio + 1.2 * diffX * distToBulletWidthRatio;
         coords.y = entity.coords.y + 1.2 * diffY * distToEntityWidthRatio + 1.2 * diffY * distToBulletWidthRatio;
-        
     }
     
     void setVelocityInPlayerDirection() {
@@ -53,9 +45,6 @@ class Bullet {
         
         v.x = resizeFactor * unscaledVx;
         v.y = resizeFactor * unscaledVy;
-        
-        //if (v.x > maxV) v.x = maxV;
-        //if (v.x < -maxV) v.x = -maxV;
     }
     
     void updatePosition() {
