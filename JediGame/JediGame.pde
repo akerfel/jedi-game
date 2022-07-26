@@ -27,8 +27,7 @@ float lethalEntitySpeed;                      // Only relevant if fastEntitiesAr
 int bulletWidth;
 float bulletSpeed;
 
-// ### Global variables ###
-boolean gameOver;
+// ### Dynamic variables ###
 int score;                                    // Number of enemies killed
 Player player;
 ArrayList<Entity> entities;
@@ -38,6 +37,14 @@ PrintWriter output;
 // ### Sounds ###
 SoundFile laserSound;
 SoundFile wilhelmScreamSound; 
+
+// ### GamesState ###
+public enum GameState {
+  GAMEOVER,
+  STARTSCREEN,
+  GAMEACTIVE
+}
+GameState gameState;
 
 // This function is called once the game has been launched
 void setup() {
@@ -70,11 +77,11 @@ void setup() {
     bulletWidth = 10;
     bulletSpeed = 13;
     
-    // ### Global variables ###
-    gameOver = false;
+    // ### Dynamic variables ###
     player = new Player(width/2, height/2);
     entities = new ArrayList<Entity>();
     bullets = new ArrayList<Bullet>();
+    gameState = GameState.GAMEACTIVE;
     
     // ### Sounds ###
     laserSound = new SoundFile(this, "retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/;
@@ -90,11 +97,27 @@ void setup() {
 
 // This function is called 60 times per second
 void draw() {
-    if (!gameOver) {
-        updateLogic();
-        drawEverything();
-    }
-    else {
-        drawGameOver();   
-    }
+  switch(gameState) {
+    case GAMEACTIVE:
+      drawEverything();
+      updateLogic();
+      break;
+    case GAMEOVER:
+      drawGameOver();
+      break;
+  }
+}
+
+void resetGame() {
+    score = 0;
+    entities.clear();
+    bullets.clear();
+    player = new Player(width/2, height/2);
+    gameState = GameState.GAMEACTIVE;
+}
+
+void gameOver() {
+    drawEverything();
+    gameState = GameState.GAMEOVER; 
+    saveCurrentScore();  // will only save if actually is new highscore
 }

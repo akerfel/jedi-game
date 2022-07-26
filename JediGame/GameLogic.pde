@@ -89,8 +89,8 @@ void updateBullets() {
 
 void checkIfGameOver() {
     if (player.isDead()) {
-        gameOver = true;  
-        saveCurrentScore();  // will only save if actually is new highscore
+        gameOver();
+        gameState = gameState.GAMEOVER;  
     }
 }
 

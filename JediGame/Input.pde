@@ -26,7 +26,24 @@ void mouseReleased() {
 }
 
 void keyPressed() {
+    switch(gameState) {
+    case GAMEACTIVE:
+        keysPressedGAMEACTIVE();
+        break;
+    case GAMEOVER:
+        keysPressedGAMEOVER();
+        break;
+  }
+}
+
+void keysPressedGAMEACTIVE() {
     player.setMove(keyCode, true);
+}
+
+void keysPressedGAMEOVER() {
+  if (key == ENTER || key == 'c' || key == ' ') {
+    resetGame();
+  }
 }
 
 void keyReleased() {

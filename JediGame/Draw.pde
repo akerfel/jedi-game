@@ -20,7 +20,7 @@ void drawGameOver() {
   fill(0, 200, 0);
   text("Score: " + score, width/2, 100);
   fill(255, 255, 255);
-  text("Restart: Enter", width/2, 150);
+  text("Restart: Space", width/2, 150);
   fill(255, 255, 255);
   text("Highscores:", width/2, 200);
   drawHighScores();
@@ -30,7 +30,7 @@ void drawHighScores() {
   ArrayList<Integer> highscores = getHighscores();
   for (int i = 0; i < highscores.size(); i++) {
     int scoreToPrint = highscores.get(i);
-    if (scoreToPrint == score) {
+    if (scoreToPrint == score && (i == highscores.size() - 1 || (i < highscores.size() - 1 && highscores.get(i+1) != score))) {
         fill(0, 200, 0);
     }
     else {
