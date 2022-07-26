@@ -23,6 +23,7 @@ public class Entity {
     }
     
     void attack() {
+        bullets.add(new Bullet(coords.x, coords.y));
         println("attack! " + random(0, 1));    
     }
     

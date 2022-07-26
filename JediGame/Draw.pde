@@ -1,18 +1,14 @@
 void drawEverything() {
     background(200);
-    drawPlayer();
     drawEntities();
+    drawBullets();
+    drawPlayer();
 }
 
 void drawEntities() {
     for (Entity entity : entities) {
         drawEntity(entity);
     }
-}
-
-void drawPlayer() {
-    fill(0, 230, 0);
-    circle(player.coords.x, player.coords.y, player.w);
 }
 
 void drawEntity(Entity entity) {
@@ -37,4 +33,20 @@ void drawEntity(Entity entity) {
         fill(240, 0, 0);
     }
     circle(entity.coords.x, entity.coords.y, entity.w);
+}
+
+void drawBullets() {
+    for (Bullet bullet : bullets) {
+        drawBullet(bullet);    
+    }
+}
+
+void drawBullet(Bullet bullet) {
+    fill(0, 0, 255);
+    circle(bullet.coords.x, bullet.coords.y, bullet.w);
+}
+
+void drawPlayer() {
+    fill(0, 230, 0);
+    circle(player.coords.x, player.coords.y, player.w);
 }

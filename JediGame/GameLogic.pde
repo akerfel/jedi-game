@@ -2,6 +2,17 @@ import java.util.Iterator;
 
 void updateLogic() {
     player.move();    
+    updateEntities();
+    updateBulletPositions();
+}
+
+void updateBulletPositions() {
+    for (Bullet bullet : bullets) {
+        bullet.updatePosition();    
+    }
+}
+
+void updateEntities() {
     updateEntityPositions();
     makeEntitiesRandomlyAttack();
     if (collidingEnemiesShouldDie) {
