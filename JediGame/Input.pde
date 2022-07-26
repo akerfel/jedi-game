@@ -3,16 +3,24 @@ void mousePressed() {
         if (!entities.isEmpty()) {
             Entity targetedEntity = getTargetedEntity();
             targetedEntity.isGrabbed = true;
-            grabbedEntity = targetedEntity;
+        }
+    }
+    
+    if (mouseButton == RIGHT) {
+        for (Entity entity : entities) {
+            if (entity.isGrabbed) {
+                entity.initiateForcePush();
+            }
         }
     }
 }
 
 void mouseReleased() {
-    for (Entity entity : entities) {
-        entity.isGrabbed = false;
+    if (mouseButton == LEFT) {
+        for (Entity entity : entities) {
+            entity.isGrabbed = false;
+        }
     }
-    grabbedEntity = null;
 }
 
 void keyPressed() {

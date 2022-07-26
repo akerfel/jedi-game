@@ -1,6 +1,5 @@
 Player player;
 ArrayList<Entity> entities;
-Entity grabbedEntity;
 
 // Settings
 boolean collidingEnemiesShouldDie;
@@ -23,8 +22,6 @@ void setup() {
     // big entity
     entities.add(new Entity(random(0, 1000), random(0, 1000), 300));
     
-    
-    grabbedEntity = null;
     
     // Settings
     collidingEnemiesShouldDie = false;

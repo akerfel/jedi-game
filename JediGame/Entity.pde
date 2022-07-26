@@ -9,15 +9,17 @@ public class Entity {
     boolean isTargeted;
     boolean isGrabbed;
     int hp;
+    boolean isBeingForcePushed;
     
     public Entity(float x, float y) {
         coords = new PVector(x, y);
         w = 30;
         v = new PVector(0, 0);
-        maxV = 30;
+        maxV = 60;
         isTargeted = false;
         isGrabbed = false;
         hp = 1;
+        isBeingForcePushed = false;
     }
     
     public Entity(float x, float y, int w) {
@@ -35,6 +37,24 @@ public class Entity {
             if (e1 != this && !alreadyMovedEntities.contains(e1) && areColliding(this, e1)) {
                 e1.coords.x += grabbedVx;
                 e1.coords.y += grabbedVy;
+                
+                // Don't let entity leave screen
+                if (e1.coords.x - w/2 < 0) { 
+                    e1.coords.x = w/2;
+                    e1.v.x = 0;
+                }
+                if (e1.coords.x + w/2 > width) {
+                    e1.coords.x = width - w/2;
+                    e1.v.x = 0;
+                }
+                if (e1.coords.y - w/2 < 0) { 
+                    e1.coords.y = w/2;
+                    e1.v.y = 0;
+                }
+                if (e1.coords.y + w/2 > width) {
+                    e1.coords.y = width - w/2;
+                    e1.v.y = 0;
+                }
                 alreadyMovedEntities.add(this);
                 e1.moveCollidingEntities(alreadyMovedEntities, grabbedVx, grabbedVy);
             }
@@ -42,53 +62,37 @@ public class Entity {
     }
     
     // The mouse should be on a straight line stretching from the player to the entity
-    void updateGrabbedPosition() {
-        float targetX = 0;
-        float targetY = 0;
-        
-        float anglePlayerMouse = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
-        float anglePlayerEntity = getAngle(player.coords.x, player.coords.y, coords.x, coords.y);
-        float entityAngleDiff = abs(anglePlayerMouse - anglePlayerEntity);
-        
-        float playerMouseDiffX = player.coords.x - mouseX;
-        float playerMouseDiffY = player.coords.y - mouseY;
-        
-        targetX = player.coords.x - grabbedLengthRatio * playerMouseDiffX; 
-        targetY = player.coords.y - grabbedLengthRatio * playerMouseDiffY; 
-        
-        // TODO: should be a smooth change to these coords (i.e. with acceleration)
-        goTowards(targetX, targetY);
-        
+    void updateGrabbedVelocity() {
+        if (!isBeingForcePushed) {
+            float mousePlayerDiffX = mouseX - player.coords.x;
+            float mousePlayerDiffY = mouseY - player.coords.y;
+            
+            float targetX = player.coords.x + grabbedLengthRatio * mousePlayerDiffX; 
+            float targetY = player.coords.y + grabbedLengthRatio * mousePlayerDiffY; 
+            
+            setVelocityTowardsPosition(targetX, targetY);
+        }
     }
     
-    void goTowards(float targetX, float targetY) {
+    void setVelocityTowardsPosition(float targetX, float targetY) {
         float diffX = targetX - coords.x;
         float diffY = targetY - coords.y;
         
         v.x = diffX * 0.2;
         v.y = diffY * 0.2;
-        
-        coords.x += v.x;
-        coords.y += v.y;
-        
-        if (!collidingEnemiesShouldDie) {
-            moveCollidingEntities(new ArrayList<Entity>(Arrays.asList(this)), v.x, v.y);
-        }
+        if (v.x > maxV) v.x = maxV;
+        if (v.x < -maxV) v.x = -maxV;
     }
     
-    // NOT USED ATM, replaced by updateGrabbedPosition
     void updatePosition() {
+        v.x *= 0.9;
+        v.y *= 0.9;
         coords.x += v.x;
         coords.y += v.y;
         
         if (!collidingEnemiesShouldDie) {
             moveCollidingEntities(new ArrayList<Entity>(Arrays.asList(this)), v.x, v.y);
         }
-        
-        // friction
-        float frictionFactor = 0.91;
-        v.x *= frictionFactor;
-        v.y *= frictionFactor;
         
         // Don't let entity leave screen
         if (coords.x - w/2 < 0) { 
@@ -107,7 +111,6 @@ public class Entity {
             coords.y = width - w/2;
             v.y = 0;
         }
-        
     }
     
     void changeVx(float diffVx) {
@@ -125,5 +128,54 @@ public class Entity {
     
     boolean isDead() {
         return hp == 0;    
+    }
+    
+    void stopForcePushIfHitWall() {
+        isBeingForcePushed = false;
+        // Don't let entity leave screen
+        if (coords.x - w/2 < 0) { 
+            coords.x = w/2;
+            v.x = 0;
+            v.y = 0;
+        }
+        if (coords.x + w/2 > width) {
+            coords.x = width - w/2;
+            v.x = 0;
+            v.y = 0;
+        }
+        if (coords.y - w/2 < 0) { 
+            coords.y = w/2;
+            v.x = 0;
+            v.y = 0;
+        }
+        if (coords.y + w/2 > width) {
+            coords.y = width - w/2;
+            v.x = 0;
+            v.y = 0;
+        }
+    }
+    
+    void initiateForcePush() {
+        isGrabbed = false;
+        isBeingForcePushed = true;
+        
+        float mousePlayerDiffX = mouseX - player.coords.x;
+        float mousePlayerDiffY = mouseY - player.coords.y;
+        
+        /*
+        if (mousePlayerDiffX > 0 && mousePlayerDiffY > 0) {
+            if (width - mouseX < height - mouseY) {
+                targetX = width - w/2;
+                targetY = mousePlayerDiffX * (width/mousePlayerDiffY) - w/2;
+                setVelocityTowardsPosition(targetX, targetY);
+            }
+        }
+        */
+        
+        float targetX = player.coords.x + 2 * grabbedLengthRatio * mousePlayerDiffX; 
+        float targetY = player.coords.y + 2 * grabbedLengthRatio * mousePlayerDiffY; 
+        
+        setVelocityTowardsPosition(targetX, targetY);
+        
     }
 }

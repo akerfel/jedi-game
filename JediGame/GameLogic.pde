@@ -35,8 +35,15 @@ void updateEntities() {
     setAllEntitiesUntargeted();
     markTargetedEntity();
     
-    if (grabbedEntity != null) {
-        grabbedEntity.updateGrabbedPosition();
+    for (Entity entity : entities) {
+        if (entity.isGrabbed) {
+            entity.updateGrabbedVelocity();
+        }
+        if (entity.isBeingForcePushed) {
+            entity.stopForcePushIfHitWall();
+        }
+        
+        entity.updatePosition();
     }
     //updateGrabbedEntityVelocity();
     //updateEntitiesPositions();
