@@ -20,15 +20,16 @@ public class Player {
     
     void move() {
         float v = speed;
-        
-        // Change coords for all relevant objects
-        for (Entity entity : entities) {
-            entity.coords.x -= v*(int(isRight) - int(isLeft));
-            entity.coords.y -= v*(int(isDown)  - int(isUp));
-        }
-        for (Bullet bullet : bullets) {
-            bullet.coords.x -= v*(int(isRight) - int(isLeft));
-            bullet.coords.y -= v*(int(isDown)  - int(isUp));
+        if (playerCanMove) {
+            // Change coords for all relevant objects
+            for (Entity entity : entities) {
+                entity.coords.x -= v*(int(isRight) - int(isLeft));
+                entity.coords.y -= v*(int(isDown)  - int(isUp));
+            }
+            for (Bullet bullet : bullets) {
+                bullet.coords.x -= v*(int(isRight) - int(isLeft));
+                bullet.coords.y -= v*(int(isDown)  - int(isUp));
+            }
         }
     }
     

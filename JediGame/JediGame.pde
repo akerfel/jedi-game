@@ -11,8 +11,10 @@ boolean collidingEnemiesShouldDie;            // I prefer false (high speed is *
 boolean fastEntitiesAreLethal;                // I prefer true. This will make fast entites kill other entities at high speeds.
 float lethalEntitySpeed;                      // Only relevant if fastEntitiesAreLethal is true
 boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clutter).
+boolean playerCanMove;                        // Default: true.
 boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points
                                                   // by just letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
+
 
 // Player
 int playerSpeed;
@@ -29,7 +31,7 @@ int numStartEnemies;
 int entityWidth;                    
 
 // Bullets
-int bulletWidth;
+int bulletWidth;                              // Really wide bullets encourages using enemies as shields (80?).
 float bulletSpeed;
 
 // ### Dynamic variables ###
@@ -64,8 +66,9 @@ void setup() {
     // Binary gameplay choices
     collidingEnemiesShouldDie = false;
     fastEntitiesAreLethal = true;
-    lethalEntitySpeed = 8;
+    lethalEntitySpeed = 14;
     targetedEntityShouldBeHighlighted = false;
+    playerCanMove = true;                     
     onlyForceControlledEnemiesDieFromBullets = true;
     
     // Player
@@ -84,7 +87,7 @@ void setup() {
     // Bullets
     chanceEnemyAttack = 0.005;
     bulletWidth = 80;
-    bulletSpeed = 13;
+    bulletSpeed = 9;
     
     // ### Dynamic variables ###
     player = new Player(width/2, height/2);
