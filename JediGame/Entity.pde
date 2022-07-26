@@ -52,13 +52,28 @@ public class Entity {
         
         float playerMouseDiffX = player.coords.x - mouseX;
         float playerMouseDiffY = player.coords.y - mouseY;
-        targetX = player.coords.x - 1.5 * playerMouseDiffX; 
-        targetY = player.coords.y - 1.5 * playerMouseDiffY; 
+        
+        targetX = player.coords.x - grabbedLengthRatio * playerMouseDiffX; 
+        targetY = player.coords.y - grabbedLengthRatio * playerMouseDiffY; 
         
         // TODO: should be a smooth change to these coords (i.e. with acceleration)
-        coords.x = targetX;
-        coords.y = targetY;
+        goTowards(targetX, targetY);
         
+    }
+    
+    void goTowards(float targetX, float targetY) {
+        float diffX = targetX - coords.x;
+        float diffY = targetY - coords.y;
+        
+        v.x = diffX * 0.2;
+        v.y = diffY * 0.2;
+        
+        coords.x += v.x;
+        coords.y += v.y;
+        
+        if (!collidingEnemiesShouldDie) {
+            moveCollidingEntities(new ArrayList<Entity>(Arrays.asList(this)), v.x, v.y);
+        }
     }
     
     // NOT USED ATM, replaced by updateGrabbedPosition

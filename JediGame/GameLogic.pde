@@ -42,9 +42,6 @@ void updateEntities() {
     //updateEntitiesPositions();
 }
 
-void updateGrabbedEntityPosition() {
-}
-
 /*
 void updateEntitiesPositions() {
     for (Entity entity : entities) {

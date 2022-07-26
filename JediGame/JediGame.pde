@@ -4,6 +4,7 @@ Entity grabbedEntity;
 
 // Settings
 boolean collidingEnemiesShouldDie;
+float grabbedLengthRatio;            // = grabbed_to_player / grabbed_to_mouse. Set to 1 for entity to be at mouse position. 
 
 void setup() {
     size(1200, 1200);   
@@ -27,6 +28,7 @@ void setup() {
     
     // Settings
     collidingEnemiesShouldDie = false;
+    grabbedLengthRatio = 1;
 }
 
 void draw() {
