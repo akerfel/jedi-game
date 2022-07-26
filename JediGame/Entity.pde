@@ -11,18 +11,9 @@ public class Entity {
     int hp;
     float attackChance;
     
-    public Entity(int x, int y) {
-        standardConstructor(x, y);
-        w = 30;
-    }
-    
     public Entity(int x, int y, int w) {
-        standardConstructor(x, y);
-        this.w = w;
-    }
-    
-    void standardConstructor(int x, int y) {
         coords = new PVector(x, y);
+        this.w = w;
         v = new PVector(0, 0);
         maxV = 30;
         isTargeted = false;
