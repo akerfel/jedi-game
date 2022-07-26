@@ -11,19 +11,18 @@ public class Entity {
     int hp;
     float attackChance;
     
-    public Entity(float x, float y) {
-        coords = new PVector(x, y);
+    public Entity(int x, int y) {
+        standardConstructor(x, y);
         w = 30;
-        v = new PVector(0, 0);
-        maxV = 60;
-        isTargeted = false;
-        isGrabbed = false;
-        hp = 1;
     }
     
-    public Entity(float x, float y, int w) {
-        coords = new PVector(x, y);
+    public Entity(int x, int y, int w) {
+        standardConstructor(x, y);
         this.w = w;
+    }
+    
+    void standardConstructor(int x, int y) {
+        coords = new PVector(x, y);
         v = new PVector(0, 0);
         maxV = 30;
         isTargeted = false;

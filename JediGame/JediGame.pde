@@ -25,7 +25,7 @@ void setup() {
     
     // Add some entities
     for (int i = 0; i < 4; i++) {
-        entities.add(new Entity(random(0, 1000), random(0, 1000)));
+        entities.add(new Entity(int(random(0, width)), int(random(0, height))));
     }
     //entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
     
