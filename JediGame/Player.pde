@@ -1,12 +1,12 @@
 public class Player {
     PVector coords;
-    int w; // width
+    float w; // width
     float speed;
     boolean isLeft, isRight, isUp, isDown;
     
     public Player(float x, float y) {
         coords = new PVector(x, y);
-        speed = 3;
+        speed = playerSpeed;
         w = 30;
     }
     
