@@ -21,7 +21,7 @@ public class Entity {
         isTargeted = false;
         isGrabbed = false;
         this.hp = hp;
-        attackChance = chanceEnemyAttack;
+        attackChance = chanceStormtrooperAttack;
         this.rgbColor = rgbColor;
         this.isEnemy = isEnemy;
     }

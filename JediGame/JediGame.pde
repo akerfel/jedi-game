@@ -21,7 +21,7 @@ boolean grabbedEntitiesSameDistFromPlayer;    // I think I prefer true. If true,
 float dist_grabbedEntitiesToPlayer;           // Only used if grabbedEntitiesSameDistFromPlayer is true.
 boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points by just
                                                   //  letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
-boolean enemiesSpawnOnIntervall;              // Default: true. If false, each frame will have chanceEnemySpawn of spawning an enemy                
+boolean enemiesSpawnOnIntervall;              // Default: true. If false, each frame will have chanceStormtrooperSpawn of spawning an enemy                
 
 // Player
 int playerSpeed;
@@ -32,25 +32,22 @@ float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_t
                                               // Only used if grabbedEntitiesSameDistFromPlayer is false.
 float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push
 
-// Entities/Enemies
-float chanceEnemySpawn;                       // Only used if enemiesSpawnOnIntervall is false
-float chanceEnemyAttack;                      // default: 0.012. Set between 0 and 1. Higher value means more frequent attacks.
-                                              // Percentage chance that each enemy attacks each frame. 
-int numStartEnemies;
-
-// Stormtrooper
+// Stormtroopers
 int stormtrooperSpawnTimerInterval;           // Only used if enemiesSpawnOnIntervall is true
 int stormtrooperRadius;
 color stormtrooperColor;
 int stormtrooperHp;
+float chanceStormtrooperSpawn;                // Only used if enemiesSpawnOnIntervall is false
+float chanceStormtrooperAttack;               // default: 0.012. Set between 0 and 1. Percentage chance that each enemy attacks each
+int numStartStormtroopers;
 
-// Box
+// Boxes
 int boxRadius;
 color boxColor;
 int boxHp;
 
 // Bullets
-int bulletWidth;                              // Really wide bullets encourages using enemies as shields (80?).
+int bulletRadius;                              // Really wide bullets encourages using enemies as shields (80?).
 float bulletSpeed;
 
 // ### Dynamic variables ###
@@ -108,15 +105,13 @@ void setup() {
     grabbedLengthRatio = 1;
     forcePushInitialSpeed = 50;
     
-    // Entities/Enemies
-    chanceEnemySpawn = 0.03;
-    numStartEnemies = 2;   
-    
     // Stormtrooper
     stormtrooperSpawnTimerInterval = 50;   
     stormtrooperRadius = 30;
     stormtrooperColor = color(255);
     stormtrooperHp = 1;
+    chanceStormtrooperSpawn = 0.03;
+    numStartStormtroopers = 2;   
     
     // Box
     boxRadius = 100;
@@ -124,8 +119,8 @@ void setup() {
     boxHp = 20;
     
     // Bullets
-    chanceEnemyAttack = 0.005;
-    bulletWidth = 40;
+    chanceStormtrooperAttack = 0.005;
+    bulletRadius = 40;
     bulletSpeed = 11;
     
     // ### Dynamic variables ###

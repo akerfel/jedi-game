@@ -6,7 +6,7 @@ class Bullet {
     
     // Give the entity which shoots the bullet as an argument (entity coords and radius are needed)
     Bullet(Entity entity) {
-        radius = bulletWidth; // must be initialised before coords! 
+        radius = bulletRadius; // must be initialised before coords! 
         setStartCoords(entity);
         setVelocityInPlayerDirection();
         hp = 1;

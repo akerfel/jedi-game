@@ -31,7 +31,7 @@ void updateBullets() {
 }
 
 void spawnInitialEntities() {
-    for (int i = 0; i < numStartEnemies; i++) {
+    for (int i = 0; i < numStartStormtroopers; i++) {
         spawnStormtrooperOnEdge();
     }
     spawnBox(30, 30);
@@ -123,7 +123,7 @@ void updateStormtrooperSpawnTimer() {
 }
 
 void randomlySpawnEnemies() {
-    if (random(0, 1) / spawnMultiplier < chanceEnemySpawn) {
+    if (random(0, 1) / spawnMultiplier < chanceStormtrooperSpawn) {
         spawnStormtrooperOnEdge();
     }
 }
