@@ -17,7 +17,7 @@ boolean fastEntitiesAreLethal;                // I prefer true. This will make f
 float lethalEntitySpeed;                      // Only used if fastEntitiesAreLethal is true
 boolean targetedEntityShouldBeHighlighted;    // I prefer false (less visual clutter).
 boolean playerCanMove;                        // Default: true.
-boolean grabbedEntitiesSameDistFromPlayer;    // Default: false. If true, grabbed entities will be at a set distance from player.
+boolean grabbedEntitiesSameDistFromPlayer;    // I think I prefer true. If true, grabbed entities will be at a set distance from player.
 float dist_grabbedEntitiesToPlayer;           // Only used if grabbedEntitiesSameDistFromPlayer is true.
 boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points by just
                                                   //  letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
