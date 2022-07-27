@@ -121,7 +121,7 @@ void setup() {
     // Box
     boxRadius = 100;
     boxColor = color(139, 69, 19);
-    boxHp = 10;
+    boxHp = 20;
     
     // Bullets
     chanceEnemyAttack = 0.005;

@@ -12,6 +12,24 @@ void updateLogic() {
     checkIfGameOver();
 }
 
+void updateEntities() {
+    updateEntityPositions();
+    makeEntitiesRandomlyAttack();
+    if (collidingEnemiesShouldDie) {
+        damageCollidingEntities();
+    }
+    if (fastEntitiesAreLethal) {
+        damageFastCollidingEntities();
+    }
+    unmarkEntitiesWhoAreNoLongerBeingForcePushed();
+}
+
+void updateBullets() {
+    updateBulletPositions();
+    damagePlayerIfTouchesBullet();
+    damageEntitiesWhoTouchBullets();
+}
+
 void spawnInitialEntities() {
     for (int i = 0; i < numStartEnemies; i++) {
         spawnStormtrooperOnEdge();
@@ -62,18 +80,6 @@ void spawnStormtrooperOnEdge() {
     spawnStormtrooper(spawnX, spawnY);
 }
 
-void updateEntities() {
-    updateEntityPositions();
-    makeEntitiesRandomlyAttack();
-    if (collidingEnemiesShouldDie) {
-        damageCollidingEntities();
-    }
-    if (fastEntitiesAreLethal) {
-        damageFastCollidingEntities();
-    }
-    unmarkEntitiesWhoAreNoLongerBeingForcePushed();
-}
-
 void unmarkEntitiesWhoAreNoLongerBeingForcePushed() {
     for (Entity entity : entities) {
         if (entity.isBeingForcePushed && entity.getSpeed() < 0.05) {
@@ -122,12 +128,6 @@ void randomlySpawnEnemies() {
     }
 }
 
-void updateBullets() {
-    updateBulletPositions();
-    damagePlayerIfTouchesBullet();
-    damageEnemiesWhoTouchBullets();
-}
-
 void checkIfGameOver() {
     if (player.isDead()) {
         gameOver();
@@ -164,10 +164,10 @@ void damagePlayerIfTouchesBullet() {
     }  
 }
 
-void damageEnemiesWhoTouchBullets() {
+void damageEntitiesWhoTouchBullets() {
     for (Entity e : entities) {
         for (Bullet b : bullets) {
-            if (!onlyForceControlledEnemiesDieFromBullets || (e.isGrabbed || e.isBeingForcePushed)) {
+            if (!e.isEnemy || (!onlyForceControlledEnemiesDieFromBullets || (e.isGrabbed || e.isBeingForcePushed))) {
                 if (areColliding(e, b)) {
                     e.hp--;
                     b.hp--; // yes, bullets have hp
