@@ -32,6 +32,9 @@ float forcePushInitialSpeed;                  // Default 50? Higher values means
 float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_to_mouse. Set 1 for entity to be at mouse position. 
                                               // Only used if grabbedEntitiesSameDistFromPlayer is false.
 
+// Entities
+float deacellerationFactor;                   // Between 0 and 1. Lower values means entities stop faster.
+
 // Stormtroopers
 int stormtrooperSpawnTimerInterval;           // Only used if enemiesSpawnOnIntervall is true
 int stormtrooperRadius;
@@ -46,6 +49,7 @@ int boxRadius;
 color boxColor;
 int boxHp;
 float chanceBoxSpawn;
+int numStartBoxes;
 
 // Bullets
 int bulletRadius;                              // Really wide bullets encourages using enemies as shields (80?).
@@ -107,9 +111,12 @@ void setup() {
     
     // Force powers
     grabbedLengthRatio = 1;
-    forcePushInitialSpeed = 75;
+    forcePushInitialSpeed = 93;
     
-    // Stormtrooper
+    // Entities
+    deacellerationFactor = 0.94;
+    
+    // Stormtroopers
     stormtrooperSpawnTimerInterval = 50;   
     stormtrooperRadius = 30;
     stormtrooperColor = color(255);
@@ -117,11 +124,12 @@ void setup() {
     chanceStormtrooperSpawn = 0.03;
     numStartStormtroopers = 2;   
     
-    // Box
+    // Boxes
     boxRadius = 100;
     boxColor = color(139, 69, 19);
-    boxHp = 20;
+    boxHp = 30;
     chanceBoxSpawn = 0.002;
+    numStartBoxes = 4;
     
     // Bullets
     chanceStormtrooperAttack = 0.0025;

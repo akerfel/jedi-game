@@ -113,8 +113,8 @@ public class Entity {
     }
     
     void updatePosition() {
-        v.x *= 0.92;
-        v.y *= 0.92;
+        v.x *= deacellerationFactor;
+        v.y *= deacellerationFactor;
         coords.x += v.x;
         coords.y += v.y;
         

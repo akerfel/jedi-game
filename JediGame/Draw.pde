@@ -82,6 +82,14 @@ void drawEntity(Entity entity) {
         fill(255, 165, 0);
     }
     circle(entity.coords.x, entity.coords.y, entity.radius*2);
+    
+    if (entity.hp != 1) {
+        textAlign(CENTER, CENTER);
+        fill(200);
+        textSize(32);
+        text(entity.hp, entity.coords.x, entity.coords.y);
+        textAlign(BASELINE);
+    }
 }
 
 void drawBullets() {

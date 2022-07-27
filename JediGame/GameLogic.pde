@@ -20,7 +20,7 @@ void updateEntities() {
         damageCollidingEntities();
     }
     if (fastEntitiesAreLethal) {
-        damageFastCollidingEntities();
+        damageFastCollidingEnemies();
     }
     unmarkEntitiesWhoAreNoLongerBeingForcePushed();
 }
@@ -122,15 +122,15 @@ void damageCollidingEntities() {
     }
 }
 
-void damageFastCollidingEntities() {
+void damageFastCollidingEnemies() {
     for (Entity e1 : entities) {
         //println("e1.getSpeed() " + e1.getSpeed());
         if (e1.getSpeed() > lethalEntitySpeed) {
             for (Entity e2 : entities) {
                 if (e1 != e2 && areTouching(e1, e2)) {
                     println("Lethal speed: " + e1.getSpeed() + "/" + lethalEntitySpeed);
-                    e1.hp--;
-                    e2.hp--;
+                    if (e1.isEnemy) e1.hp--;
+                    if (e2.isEnemy) e2.hp--;
                 }
             }    
         }    
