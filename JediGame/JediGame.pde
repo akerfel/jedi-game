@@ -8,8 +8,8 @@ int spawnMultiplier;                         // Set to 1 for default behavior. H
 // ### Settings ###
 
 // Basic
-boolean soundIsOn;
 float volume;                                // Set between 0 and 1.
+boolean muteSound;
 
 // Binary gameplay choices
 boolean collidingEnemiesShouldDie;            // I prefer false (high speed is *not* required for this setting).
@@ -78,15 +78,16 @@ void setup() {
     size(1200, 1200);   
     
     // ### Cheats ###
-    godMode = false;
-    noBullets = false;
+    godMode = true;
+    noBullets = true;
     spawnMultiplier = 1;
     
     // ### Settings ###
     
     // Basic
-    soundIsOn = true;
     volume = 0.05;
+    muteSound = false;
+    if (muteSound) volume = 0;
     
     // Binary gameplay choices
     collidingEnemiesShouldDie = false;
@@ -100,7 +101,7 @@ void setup() {
     enemiesSpawnOnIntervall = true;
     
     // Player
-    playerSpeed = 7;
+    playerSpeed = 5;
     playerWidth = 30;
     
     // Force powers
@@ -125,7 +126,7 @@ void setup() {
     // Bullets
     chanceEnemyAttack = 0.005;
     bulletWidth = 80;
-    bulletSpeed = 9;
+    bulletSpeed = 11;
     
     // ### Dynamic variables ###
     player = new Player(width/2, height/2);
@@ -147,6 +148,7 @@ void setup() {
     }
     spawnBox(30, 30);
     //entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
+    
 }
 
 // This function is called once per frame/tick

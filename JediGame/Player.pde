@@ -21,14 +21,25 @@ public class Player {
     void move() {
         float v = speed;
         if (playerCanMove) {
+            float xDiff = v*(int(isRight) - int(isLeft));
+            float yDiff = v*(int(isDown)  - int(isUp));
+            
+            // Moving diagonally should not be faster than moving up or down
+            if (abs(xDiff) > v/10 && abs(yDiff) > v/10) {
+                xDiff = xDiff * sqrt(0.5);    
+                yDiff = yDiff * sqrt(0.5);   
+            }
+            
+            println("Speed: " + sqrt(sq(xDiff) + sq(yDiff)));
+            
             // Change coords for all relevant objects
             for (Entity entity : entities) {
-                entity.coords.x -= v*(int(isRight) - int(isLeft));
-                entity.coords.y -= v*(int(isDown)  - int(isUp));
+                entity.coords.x -= xDiff;
+                entity.coords.y -= yDiff;
             }
             for (Bullet bullet : bullets) {
-                bullet.coords.x -= v*(int(isRight) - int(isLeft));
-                bullet.coords.y -= v*(int(isDown)  - int(isUp));
+                bullet.coords.x -= xDiff;
+                bullet.coords.y -= yDiff;
             }
         }
     }

@@ -133,7 +133,7 @@ void removeDeadEntities() {
     while(it.hasNext()) {
         if (it.next().isDead()) {
             it.remove();    
-            if (soundIsOn) wilhelmScreamSound.play();
+            wilhelmScreamSound.play();
             score++;
         }
     }
