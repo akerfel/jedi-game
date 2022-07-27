@@ -31,13 +31,6 @@ void updateBullets() {
     damageEntitiesWhoTouchBullets();
 }
 
-void spawnInitialEntities() {
-    for (int i = 0; i < numStartStormtroopers; i++) {
-        spawnStormtrooperOnEdge();
-    }
-    spawnBox(30, 30);
-}
-
 void handleEnemySpawning() {
     if (enemiesSpawnOnIntervall) {
         updateStormtrooperSpawnTimer();
@@ -146,24 +139,23 @@ void damageFastCollidingEntities() {
 
 void updateStormtrooperSpawnTimer() {
     stormtrooperSpawnTimer--;
-    if (stormtrooperSpawnTimer < 0) {
+    if (stormtrooperSpawnTimer < 0 && spawnMultiplier != 0) {
         spawnStormtrooperOnEdge();
         stormtrooperSpawnTimer = int(stormtrooperSpawnTimerInterval / spawnMultiplier);
     }
 }
 
 void randomlySpawnEnemies() {
-    if (random(0, 1) / spawnMultiplier < chanceStormtrooperSpawn) {
+    if (spawnMultiplier != 0 && random(0, 1) / spawnMultiplier < chanceStormtrooperSpawn) {
         spawnStormtrooperOnEdge();
     }
 }
 
 void randomlySpawnBoxes() {
-    if (random(0, 1) / spawnMultiplier < chanceBoxSpawn) {
+    if (spawnMultiplier != 0 && random(0, 1) / spawnMultiplier < chanceBoxSpawn) {
         spawnBoxOnEdge();
     }
 }
-
 
 void checkIfGameOver() {
     if (player.isDead()) {
@@ -311,8 +303,8 @@ void markTargetedEntity() {
         float distClosestEntity = 1000000;
         
         for (Entity entity : entities) {
-            // Entity must be visible to be grabbed
-            if (entity.coords.x > -entity.radius && entity.coords.x < width + entity.radius && entity.coords.y > -entity.radius && entity.coords.x < height + entity.radius) {
+            // Entity must (almost) be visible to be grabbed
+            if (entity.isAlmostOnScreen()) {
                 // Angles
                 float anglePlayerEntity = getAngle(player.coords.x, player.coords.y, entity.coords.x, entity.coords.y);
                 float angleDiff = abs(anglePlayerMouse - anglePlayerEntity);
@@ -345,6 +337,8 @@ void markTargetedEntity() {
         targetedEntity.isTargeted = true;
     }
 }
+
+
 
 PVector mouseCoords() {
     return new PVector(mouseX, mouseY);    

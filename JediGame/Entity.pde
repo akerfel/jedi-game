@@ -98,9 +98,21 @@ public class Entity {
         //if (v.x < -maxV) v.x = -maxV;
     }
     
+    boolean isOnScreen() {
+        return coords.x > -radius && coords.x < width + radius && coords.y > -radius && coords.y < height + radius;
+    }
+    
+    boolean isAlmostOnScreen() {
+        int extra = 500;
+        return coords.x > -radius - extra && 
+               coords.x < width + radius + extra && 
+               coords.y > -radius - extra && 
+               coords.y < height + radius + extra;
+    }
+    
     void updatePosition() {
-        v.x *= 0.925;
-        v.y *= 0.925;
+        v.x *= 0.92;
+        v.y *= 0.92;
         coords.x += v.x;
         coords.y += v.y;
         

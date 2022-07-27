@@ -73,7 +73,10 @@ GameState gameState;
 
 // This function is called once the game has been launched
 void setup() {
-    size(1200, 1200);   
+    fullScreen();
+    println("width: " + width);
+    
+    println("height: " + height);
     
     // ### Cheats ###
     godMode = false;
@@ -104,7 +107,7 @@ void setup() {
     
     // Force powers
     grabbedLengthRatio = 1;
-    forcePushInitialSpeed = 50;
+    forcePushInitialSpeed = 75;
     
     // Stormtrooper
     stormtrooperSpawnTimerInterval = 50;   
@@ -140,6 +143,7 @@ void setup() {
     
     // ### Level setup ###
     spawnInitialEntities();
+    //spawnOneStromtrooper();
 }
 
 // This function is called once per frame/tick
