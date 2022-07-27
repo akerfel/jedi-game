@@ -1,12 +1,12 @@
 class Bullet {
-    float w;
+    float radius;
     PVector coords;
     PVector v;
     int hp;
     
-    // Give the entity which shoots the bullet as an argument (entity coords and width are needed)
+    // Give the entity which shoots the bullet as an argument (entity coords and radius are needed)
     Bullet(Entity entity) {
-        w = bulletWidth; // must be initialised before coords! 
+        radius = bulletWidth; // must be initialised before coords! 
         setStartCoords(entity);
         setVelocityInPlayerDirection();
         hp = 1;
@@ -20,8 +20,8 @@ class Bullet {
         
         // Trigonometry time. The bullet spawns at a distance of (1.2 * entity_radius + 1.2 * bullet_radius) from the entity's center.
         float distEntityPlayer = sqrt(sq(diffX) + sq(diffY));
-        float distToEntityWidthRatio = (entity.w/2) / distEntityPlayer;
-        float distToBulletWidthRatio = (this.w/2) / distEntityPlayer;
+        float distToEntityWidthRatio = (entity.radius) / distEntityPlayer;
+        float distToBulletWidthRatio = (this.radius) / distEntityPlayer;
         coords.x = entity.coords.x + 1.2 * diffX * distToEntityWidthRatio + 1.2 * diffX * distToBulletWidthRatio;
         coords.y = entity.coords.y + 1.2 * diffY * distToEntityWidthRatio + 1.2 * diffY * distToBulletWidthRatio;
     }

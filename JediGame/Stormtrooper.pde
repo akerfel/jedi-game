@@ -1,7 +1,7 @@
 public class Stormtrooper extends Enemy {
     
     public Stormtrooper(int x, int y) {
-        super(x, y, stormtrooperWidth, stormtrooperHp, stormtrooperColor);
+        super(x, y, stormtrooperRadius, stormtrooperHp, stormtrooperColor);
     }
     
     void attack() {

@@ -1,6 +1,6 @@
 public class Player {
     PVector coords;
-    float w; // width
+    float radius; // width
     float speed;
     boolean isLeft, isRight, isUp, isDown;
     private int hp;
@@ -8,7 +8,7 @@ public class Player {
     public Player(float x, float y) {
         coords = new PVector(x, y);
         speed = playerSpeed;
-        w = playerWidth;
+        radius = playerRadius;
         hp = 1;
     }
     

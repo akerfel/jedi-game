@@ -12,6 +12,13 @@ void updateLogic() {
     checkIfGameOver();
 }
 
+void spawnInitialEntities() {
+    for (int i = 0; i < numStartEnemies; i++) {
+        spawnStormtrooperOnEdge();
+    }
+    spawnBox(30, 30);
+}
+
 void handleEnemySpawning() {
     if (enemiesSpawnOnIntervall) {
         updateStormtrooperSpawnTimer();
@@ -39,16 +46,16 @@ void spawnStormtrooperOnEdge() {
     
     switch(randWallNum) {
       case 0: 
-        spawnY = stormtrooperWidth;
+        spawnY = stormtrooperRadius;
         break;
       case 1: 
-        spawnY = height - stormtrooperWidth;
+        spawnY = height - stormtrooperRadius;
         break;
       case 2: 
-        spawnX = stormtrooperWidth;
+        spawnX = stormtrooperRadius;
         break;
       case 3: 
-        spawnX = width - stormtrooperWidth;
+        spawnX = width - stormtrooperRadius;
         break;
     }
     
@@ -186,22 +193,22 @@ void makeEntitiesRandomlyAttack() {
 
 // Returns true if the two entities are colliding
 boolean areColliding(Entity e1, Entity e2) {
-    return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < e1.w/2 + e2.w/2);
+    return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < e1.radius + e2.radius);
 }
 
 // Returns true if the two entities are touching
 boolean areTouching(Entity e1, Entity e2) {
-    return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < 1.15 * (e1.w/2 + e2.w/2));
+    return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < 1.15 * (e1.radius + e2.radius));
 }
 
 // Returns true if the entity is collding with the bullet
 boolean areColliding(Entity e, Bullet b) {
-    return (sqrt(sq(abs(e.coords.x - b.coords.x)) + sq(abs(e.coords.y - b.coords.y))) < e.w/2 + b.w/2);
+    return (sqrt(sq(abs(e.coords.x - b.coords.x)) + sq(abs(e.coords.y - b.coords.y))) < e.radius + b.radius);
 }
 
 // Returns true if the bullet is collding with the player
 boolean areColliding(Player p, Bullet b) {
-    return (sqrt(sq(abs(p.coords.x - b.coords.x)) + sq(abs(p.coords.y - b.coords.y))) < p.w/2 + b.w/2);
+    return (sqrt(sq(abs(p.coords.x - b.coords.x)) + sq(abs(p.coords.y - b.coords.y))) < p.radius + b.radius);
 }
 
 void updateEntityPositions() {
@@ -268,7 +275,7 @@ void markTargetedEntity() {
         
         for (Entity entity : entities) {
             // Entity must be visible to be grabbed
-            if (entity.coords.x > -entity.w/2 && entity.coords.x < width + entity.w/2 && entity.coords.y > -entity.w/2 && entity.coords.x < height + entity.w/2) {
+            if (entity.coords.x > -entity.radius && entity.coords.x < width + entity.radius && entity.coords.y > -entity.radius && entity.coords.x < height + entity.radius) {
                 // Angles
                 float anglePlayerEntity = getAngle(player.coords.x, player.coords.y, entity.coords.x, entity.coords.y);
                 float angleDiff = abs(anglePlayerMouse - anglePlayerEntity);

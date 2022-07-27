@@ -25,7 +25,7 @@ boolean enemiesSpawnOnIntervall;              // Default: true. If false, each f
 
 // Player
 int playerSpeed;
-int playerWidth;
+int playerRadius;
 
 // Force powers
 float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_to_mouse. Set 1 for entity to be at mouse position. 
@@ -40,12 +40,12 @@ int numStartEnemies;
 
 // Stormtrooper
 int stormtrooperSpawnTimerInterval;           // Only used if enemiesSpawnOnIntervall is true
-int stormtrooperWidth;
+int stormtrooperRadius;
 color stormtrooperColor;
 int stormtrooperHp;
 
 // Box
-int boxWidth;
+int boxRadius;
 color boxColor;
 int boxHp;
 
@@ -78,8 +78,8 @@ void setup() {
     size(1200, 1200);   
     
     // ### Cheats ###
-    godMode = true;
-    noBullets = true;
+    godMode = false;
+    noBullets = false;
     spawnMultiplier = 1;
     
     // ### Settings ###
@@ -102,7 +102,7 @@ void setup() {
     
     // Player
     playerSpeed = 5;
-    playerWidth = 30;
+    playerRadius = 15;
     
     // Force powers
     grabbedLengthRatio = 1;
@@ -114,18 +114,18 @@ void setup() {
     
     // Stormtrooper
     stormtrooperSpawnTimerInterval = 50;   
-    stormtrooperWidth = 60;
+    stormtrooperRadius = 30;
     stormtrooperColor = color(255);
     stormtrooperHp = 1;
     
     // Box
-    boxWidth = 120;
+    boxRadius = 100;
     boxColor = color(139, 69, 19);
-    boxHp = 3;
+    boxHp = 10;
     
     // Bullets
     chanceEnemyAttack = 0.005;
-    bulletWidth = 80;
+    bulletWidth = 40;
     bulletSpeed = 11;
     
     // ### Dynamic variables ###
@@ -142,13 +142,7 @@ void setup() {
     wilhelmScreamSound.amp(volume);
     
     // ### Level setup ###
-    // Add some entities
-    for (int i = 0; i < numStartEnemies; i++) {
-        spawnStormtrooperOnEdge();
-    }
-    spawnBox(30, 30);
-    //entities.add(new Entity(random(0, 1000), random(0, 1000), 300)); // big entity
-    
+    spawnInitialEntities();
 }
 
 // This function is called once per frame/tick
@@ -168,8 +162,10 @@ void resetGame() {
     score = 0;
     entities.clear();
     bullets.clear();
+    spawnInitialEntities();
     player = new Player(width/2, height/2);
     gameState = GameState.GAMEACTIVE;
+    
 }
 
 void gameOver() {

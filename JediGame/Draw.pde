@@ -70,7 +70,7 @@ void drawEntity(Entity entity) {
             
             // highlight version 1: circle around
             //fill(200, 200, 200);
-            //circle(entity.coords.x, entity.coords.y, entity.w * 2);
+            //circle(entity.coords.x, entity.coords.y, entity.radius * 2);
             
             // highlight version 2: thicker stroke
             fill(139, 69, 19);
@@ -81,7 +81,7 @@ void drawEntity(Entity entity) {
     if (entity.isGrabbed) {
         fill(255, 165, 0);
     }
-    circle(entity.coords.x, entity.coords.y, entity.w);
+    circle(entity.coords.x, entity.coords.y, entity.radius*2);
 }
 
 void drawBullets() {
@@ -92,10 +92,10 @@ void drawBullets() {
 
 void drawBullet(Bullet bullet) {
     fill(255, 0, 0);
-    circle(bullet.coords.x, bullet.coords.y, bullet.w);
+    circle(bullet.coords.x, bullet.coords.y, bullet.radius*2);
 }
 
 void drawPlayer() {
     fill(0, 230, 0);
-    circle(player.coords.x, player.coords.y, player.w);
+    circle(player.coords.x, player.coords.y, player.radius*2);
 }

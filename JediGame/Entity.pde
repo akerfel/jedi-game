@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class Entity {
     PVector coords;
-    float w; // entity width
+    float radius; // entity width
     PVector v;
     float maxV;
     boolean isTargeted;
@@ -13,9 +13,9 @@ public class Entity {
     color rgbColor;
     boolean isEnemy;            // If false, it is just a static object, like a stone
     
-    public Entity(int x, int y, int w, int hp, color rgbColor, boolean isEnemy) {
+    public Entity(int x, int y, int radius, int hp, color rgbColor, boolean isEnemy) {
         coords = new PVector(x, y);
-        this.w = w;
+        this.radius = radius;
         v = new PVector(0, 0);
         maxV = 50;
         isTargeted = false;
