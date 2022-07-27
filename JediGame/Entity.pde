@@ -98,10 +98,12 @@ public class Entity {
         //if (v.x < -maxV) v.x = -maxV;
     }
     
+    // Returns true if entity is on screen
     boolean isOnScreen() {
         return coords.x > -radius && coords.x < width + radius && coords.y > -radius && coords.y < height + radius;
     }
     
+    // Returns true if entity is or is almost on screen
     boolean isAlmostOnScreen() {
         int extra = 500;
         return coords.x > -radius - extra && 
