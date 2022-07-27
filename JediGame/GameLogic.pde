@@ -2,6 +2,7 @@ import java.util.Iterator;
 
 void updateLogic() {
     handleEnemySpawning();
+    handleNonEnemySpawning();
     
     player.move();    
     updateEntities();
@@ -46,14 +47,19 @@ void handleEnemySpawning() {
     }
 }
 
+// Handles spawning of non-enemy entities, such as boxes.
+void handleNonEnemySpawning() {
+    randomlySpawnBoxes();
+}
+
+// Spawns a stromtrooper at location (x, y)
+void spawnStormtrooper(int x, int y) {
+    entities.add(new Stormtrooper(x, y));
+}
+
 // Spawns a box at location (x, y)
 void spawnBox(int x, int y) {
     entities.add(new Box(x, y));
-}
-
-// Spawns a stormtrooper at location (x, y)
-void spawnStormtrooper(int x, int y) {
-    entities.add(new Stormtrooper(x, y));
 }
 
 void spawnStormtrooperOnEdge() {
@@ -78,6 +84,30 @@ void spawnStormtrooperOnEdge() {
     }
     
     spawnStormtrooper(spawnX, spawnY);
+}
+
+void spawnBoxOnEdge() {
+    int spawnX = int(random(0, width));
+    int spawnY = int(random(0, height));
+    
+    int randWallNum = int(random(0, 4));
+    
+    switch(randWallNum) {
+      case 0: 
+        spawnY = boxRadius;
+        break;
+      case 1: 
+        spawnY = height - boxRadius;
+        break;
+      case 2: 
+        spawnX = boxRadius;
+        break;
+      case 3: 
+        spawnX = width - boxRadius;
+        break;
+    }
+    
+    spawnBox(spawnX, spawnY);
 }
 
 void unmarkEntitiesWhoAreNoLongerBeingForcePushed() {
@@ -127,6 +157,13 @@ void randomlySpawnEnemies() {
         spawnStormtrooperOnEdge();
     }
 }
+
+void randomlySpawnBoxes() {
+    if (random(0, 1) / spawnMultiplier < chanceBoxSpawn) {
+        spawnBoxOnEdge();
+    }
+}
+
 
 void checkIfGameOver() {
     if (player.isDead()) {

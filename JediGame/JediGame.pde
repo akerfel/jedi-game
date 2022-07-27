@@ -28,9 +28,9 @@ int playerSpeed;
 int playerRadius;
 
 // Force powers
+float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push
 float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_to_mouse. Set 1 for entity to be at mouse position. 
                                               // Only used if grabbedEntitiesSameDistFromPlayer is false.
-float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push
 
 // Stormtroopers
 int stormtrooperSpawnTimerInterval;           // Only used if enemiesSpawnOnIntervall is true
@@ -45,6 +45,7 @@ int numStartStormtroopers;
 int boxRadius;
 color boxColor;
 int boxHp;
+float chanceBoxSpawn;
 
 // Bullets
 int bulletRadius;                              // Really wide bullets encourages using enemies as shields (80?).
@@ -117,9 +118,10 @@ void setup() {
     boxRadius = 100;
     boxColor = color(139, 69, 19);
     boxHp = 20;
+    chanceBoxSpawn = 0.002;
     
     // Bullets
-    chanceStormtrooperAttack = 0.005;
+    chanceStormtrooperAttack = 0.0025;
     bulletRadius = 40;
     bulletSpeed = 11;
     

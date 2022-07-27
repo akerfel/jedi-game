@@ -99,8 +99,8 @@ public class Entity {
     }
     
     void updatePosition() {
-        v.x *= 0.95;
-        v.y *= 0.95;
+        v.x *= 0.925;
+        v.y *= 0.925;
         coords.x += v.x;
         coords.y += v.y;
         
