@@ -1,7 +1,7 @@
 import java.util.Iterator;
 
 void updateLogic() {
-    randomlySpawnEnemies();
+    handleEnemySpawning();
     
     player.move();    
     updateEntities();
@@ -10,6 +10,15 @@ void updateLogic() {
     removeDeadEntities();
     removeDeadBullets();
     checkIfGameOver();
+}
+
+void handleEnemySpawning() {
+    if (enemiesSpawnOnIntervall) {
+        updateStormtrooperSpawnTimer();
+    }
+    else {
+        randomlySpawnEnemies();
+    }
 }
 
 // Spawns a box at location (x, y)
@@ -44,12 +53,6 @@ void spawnStormtrooperOnEdge() {
     }
     
     spawnStormtrooper(spawnX, spawnY);
-}
-
-void randomlySpawnEnemies() {
-    if (random(0, 1) < chanceEnemySpawn) {
-        spawnStormtrooperOnEdge();
-    }
 }
 
 void updateEntities() {
@@ -98,6 +101,20 @@ void damageFastCollidingEntities() {
     }
 }
 
+void updateStormtrooperSpawnTimer() {
+    stormtrooperSpawnTimer--;
+    if (stormtrooperSpawnTimer < 0) {
+        spawnStormtrooperOnEdge();
+        stormtrooperSpawnTimer = int(stormtrooperSpawnTimerInterval / spawnMultiplier);
+    }
+}
+
+void randomlySpawnEnemies() {
+    if (random(0, 1) / spawnMultiplier < chanceEnemySpawn) {
+        spawnStormtrooperOnEdge();
+    }
+}
+
 void updateBullets() {
     updateBulletPositions();
     damagePlayerIfTouchesBullet();
@@ -116,7 +133,7 @@ void removeDeadEntities() {
     while(it.hasNext()) {
         if (it.next().isDead()) {
             it.remove();    
-            wilhelmScreamSound.play();
+            if (soundIsOn) wilhelmScreamSound.play();
             score++;
         }
     }

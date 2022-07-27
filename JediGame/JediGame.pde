@@ -3,8 +3,12 @@ import processing.sound.*; // You need to download this in Processing (Tools -> 
 // ### Cheats ###
 boolean godMode;
 boolean noBullets;
+int spawnMultiplier;                         // Set to 1 for default behavior. Higher means more frequent enemy spawns.
 
 // ### Settings ###
+
+// Basic
+boolean soundIsOn;
 
 // Binary gameplay choices
 boolean collidingEnemiesShouldDie;            // I prefer false (high speed is *not* required for this setting).
@@ -16,7 +20,7 @@ boolean grabbedEntitiesSameDistFromPlayer;    // Default: false. If true, grabbe
 float dist_grabbedEntitiesToPlayer;           // Only used if grabbedEntitiesSameDistFromPlayer is true.
 boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points by just
                                                   //  letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
-                                                  
+boolean enemiesSpawnOnIntervall;              // Default: true. If false, each frame will have chanceEnemySpawn of spawning an enemy                
 
 // Player
 int playerSpeed;
@@ -28,12 +32,13 @@ float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_t
 float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push
 
 // Entities/Enemies
-float chanceEnemySpawn;
+float chanceEnemySpawn;                       // Only used if enemiesSpawnOnIntervall is false
 float chanceEnemyAttack;                      // default: 0.012. Set between 0 and 1. Higher value means more frequent attacks.
-                                              //  Percentage chance that each enemy attacks each frame. 
+                                              // Percentage chance that each enemy attacks each frame. 
 int numStartEnemies;
 
 // Stormtrooper
+int stormtrooperSpawnTimerInterval;           // Only used if enemiesSpawnOnIntervall is true
 int stormtrooperWidth;
 color stormtrooperColor;
 int stormtrooperHp;
@@ -52,7 +57,8 @@ int score;                                    // Number of enemies killed
 Player player;
 ArrayList<Entity> entities;
 ArrayList<Bullet> bullets;
-PrintWriter output;
+PrintWriter output;     
+int stormtrooperSpawnTimer;
 
 // ### Sounds ###
 SoundFile laserSound;
@@ -73,8 +79,12 @@ void setup() {
     // ### Cheats ###
     godMode = false;
     noBullets = false;
+    spawnMultiplier = 1;
     
     // ### Settings ###
+    
+    // Basic
+    soundIsOn = true;
     
     // Binary gameplay choices
     collidingEnemiesShouldDie = false;
@@ -82,9 +92,10 @@ void setup() {
     lethalEntitySpeed = 14;
     targetedEntityShouldBeHighlighted = false;
     playerCanMove = true;                     
-    grabbedEntitiesSameDistFromPlayer = false;
+    grabbedEntitiesSameDistFromPlayer = true;
     dist_grabbedEntitiesToPlayer = 150;
     onlyForceControlledEnemiesDieFromBullets = true;
+    enemiesSpawnOnIntervall = true;
     
     // Player
     playerSpeed = 7;
@@ -95,10 +106,11 @@ void setup() {
     forcePushInitialSpeed = 50;
     
     // Entities/Enemies
-    chanceEnemySpawn = 0.01;
-    numStartEnemies = 2;
+    chanceEnemySpawn = 0.03;
+    numStartEnemies = 2;   
     
     // Stormtrooper
+    stormtrooperSpawnTimerInterval = 50;   
     stormtrooperWidth = 60;
     stormtrooperColor = color(255);
     stormtrooperHp = 1;
@@ -109,7 +121,7 @@ void setup() {
     boxHp = 3;
     
     // Bullets
-    chanceEnemyAttack = 0.0034;
+    chanceEnemyAttack = 0.005;
     bulletWidth = 80;
     bulletSpeed = 9;
     
@@ -118,6 +130,7 @@ void setup() {
     entities = new ArrayList<Entity>();
     bullets = new ArrayList<Bullet>();
     gameState = GameState.GAMEACTIVE;
+    stormtrooperSpawnTimer = 10;
     
     // ### Sounds ###
     laserSound = new SoundFile(this, "retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/;

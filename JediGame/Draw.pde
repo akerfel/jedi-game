@@ -4,16 +4,24 @@ void drawEverything() {
     drawBullets();
     drawPlayer();
     drawScore();
+    drawNumOfEntities();
     drawFPS();
 }
 
 void drawScore() {
   fill(color(255, 255, 255));
-  textSize(32);
-  text(score, width - 60, 60);
+  textSize(20);
+  text("Score: " + score, width - 120, 30);
+}
+
+void drawNumOfEntities() {
+  fill(color(255, 255, 255));
+  textSize(20);
+  text("Entities: " + entities.size(), width - 120, 50);
 }
 
 void drawGameOver() {
+  textSize(32);
   fill(255, 255, 255);
   textAlign(CENTER);
   text("GAME OVER", width/2, 50);
@@ -49,7 +57,7 @@ void drawEntities() {
 
 void drawFPS() {
   fill(220);
-  text(int(frameRate), 20, 30); 
+  text(int(frameRate), 10, 20); 
 }
 
 void drawEntity(Entity entity) {

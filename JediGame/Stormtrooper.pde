@@ -7,7 +7,7 @@ public class Stormtrooper extends Enemy {
     void attack() {
         if (!noBullets) {
             bullets.add(new Bullet(this)); 
-            laserSound.play();
+            if (soundIsOn) laserSound.play();
         }  
     }
 }
