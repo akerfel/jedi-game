@@ -9,6 +9,7 @@ int spawnMultiplier;                         // Set to 1 for default behavior. H
 
 // Basic
 boolean soundIsOn;
+float volume;                                // Set between 0 and 1.
 
 // Binary gameplay choices
 boolean collidingEnemiesShouldDie;            // I prefer false (high speed is *not* required for this setting).
@@ -85,6 +86,7 @@ void setup() {
     
     // Basic
     soundIsOn = true;
+    volume = 0.05;
     
     // Binary gameplay choices
     collidingEnemiesShouldDie = false;
@@ -134,7 +136,9 @@ void setup() {
     
     // ### Sounds ###
     laserSound = new SoundFile(this, "retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/;
+    laserSound.amp(volume);
     wilhelmScreamSound = new SoundFile(this, "wilhelmScream.wav"); 
+    wilhelmScreamSound.amp(volume);
     
     // ### Level setup ###
     // Add some entities
