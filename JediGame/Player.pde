@@ -30,8 +30,6 @@ public class Player {
                 yDiff = yDiff * sqrt(0.5);   
             }
             
-            println("Speed: " + sqrt(sq(xDiff) + sq(yDiff)));
-            
             // Change coords for all relevant objects
             for (Entity entity : entities) {
                 entity.coords.x -= xDiff;
