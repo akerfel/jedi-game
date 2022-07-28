@@ -19,6 +19,8 @@ public class Player {
     }
     
     void move() {
+        
+        // Change coords
         float v = speed;
         if (playerCanMove) {
             float xDiff = v*(int(isRight) - int(isLeft));
@@ -38,6 +40,27 @@ public class Player {
             for (Bullet bullet : bullets) {
                 bullet.coords.x -= xDiff;
                 bullet.coords.y -= yDiff;
+            }
+            
+            // Check if player is inside wall
+            boolean playerIsInsideWall = false;
+            for (Entity entity : entities) {
+                if (areColliding(entity, this)) {
+                    playerIsInsideWall = true;
+                    break;
+                }
+            }
+            
+            // Revert to previous coords if player is inside wall
+            if (playerIsInsideWall) {
+                for (Entity entity : entities) {
+                    entity.coords.x += xDiff;
+                    entity.coords.y += yDiff;
+                }
+                for (Bullet bullet : bullets) {
+                    bullet.coords.x += xDiff;
+                    bullet.coords.y += yDiff;
+                }
             }
         }
     }

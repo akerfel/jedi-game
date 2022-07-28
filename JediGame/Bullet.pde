@@ -31,6 +31,13 @@ class Bullet {
          setVelocityTowardsPosition(player.coords.x, player.coords.y, bulletSpeed);   
     }
     
+    void damage(int damageAmount) {
+        hp -= damageAmount;
+        if (hp < 0) {
+            hp = 0;    
+        }
+    }
+    
     // The velocity is updated so that entity will move towards (targetX, targetY).
     // The speed is specified as an argument.
     void setVelocityTowardsPosition(float targetX, float targetY, float speed) {

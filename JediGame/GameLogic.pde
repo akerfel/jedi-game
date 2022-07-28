@@ -50,57 +50,57 @@ void spawnStormtrooper(int x, int y) {
     entities.add(new Stormtrooper(x, y));
 }
 
+// Spawns a wall at location (x, y)
+void spawnWall(int x, int y) {
+    entities.add(new Wall(x, y));
+}
+
 // Spawns a box at location (x, y)
 void spawnBox(int x, int y) {
     entities.add(new Box(x, y));
 }
 
-void spawnStormtrooperOnEdge() {
-    int spawnX = int(random(0, width));
-    int spawnY = int(random(0, height));
+void moveEntityToEdgeOfScreen(Entity entity) {
+    float x = int(random(0, width));
+    float y = int(random(0, height));
     
     int randWallNum = int(random(0, 4));
     
     switch(randWallNum) {
       case 0: 
-        spawnY = stormtrooperRadius;
+        x = entity.radius;
         break;
       case 1: 
-        spawnY = height - stormtrooperRadius;
+        y = height - entity.radius;
         break;
       case 2: 
-        spawnX = stormtrooperRadius;
+        x = entity.radius;
         break;
       case 3: 
-        spawnX = width - stormtrooperRadius;
+        y = width - entity.radius;
         break;
     }
     
-    spawnStormtrooper(spawnX, spawnY);
+    entity.coords.x = x;
+    entity.coords.y = y;
+}
+
+void spawnStormtrooperOnEdge() {
+    Stormtrooper stormtrooper = new Stormtrooper(0, 0);
+    moveEntityToEdgeOfScreen(stormtrooper);
+    entities.add(stormtrooper);
 }
 
 void spawnBoxOnEdge() {
-    int spawnX = int(random(0, width));
-    int spawnY = int(random(0, height));
-    
-    int randWallNum = int(random(0, 4));
-    
-    switch(randWallNum) {
-      case 0: 
-        spawnY = boxRadius;
-        break;
-      case 1: 
-        spawnY = height - boxRadius;
-        break;
-      case 2: 
-        spawnX = boxRadius;
-        break;
-      case 3: 
-        spawnX = width - boxRadius;
-        break;
-    }
-    
-    spawnBox(spawnX, spawnY);
+    Box box = new Box(0, 0);
+    moveEntityToEdgeOfScreen(box);
+    entities.add(box);
+}
+
+void spawnWallOnEdge() {
+    Wall wall = new Wall(0, 0);
+    moveEntityToEdgeOfScreen(wall);
+    entities.add(wall);
 }
 
 void unmarkEntitiesWhoAreNoLongerBeingForcePushed() {
@@ -115,8 +115,8 @@ void damageCollidingEntities() {
     for (Entity e1 : entities) {
         for (Entity e2 : entities) {
             if (e1 != e2 && areColliding(e1, e2)) {
-                e1.hp--;
-                e2.hp--;
+                e1.damage(1);
+                e2.damage(1);
             }
         }  
     }
@@ -129,8 +129,8 @@ void damageFastCollidingEnemies() {
             for (Entity e2 : entities) {
                 if (e1 != e2 && areTouching(e1, e2)) {
                     println("Lethal speed: " + e1.getSpeed() + "/" + lethalEntitySpeed);
-                    if (e1.isEnemy) e1.hp--;
-                    if (e2.isEnemy) e2.hp--;
+                    if (e1.isEnemy) e1.damage(1);
+                    if (e2.isEnemy) e2.damage(1);
                 }
             }    
         }    
@@ -188,7 +188,7 @@ void damagePlayerIfTouchesBullet() {
     for (Bullet bullet : bullets) {
         if (areColliding(player, bullet)) {
             player.damage(1);
-            bullet.hp--; // yes, bullets have hp
+            bullet.damage(1); // yes, bullets have hp
         }
     }  
 }
@@ -198,8 +198,8 @@ void damageEntitiesWhoTouchBullets() {
         for (Bullet b : bullets) {
             if (!e.isEnemy || (!onlyForceControlledEnemiesDieFromBullets || (e.isGrabbed || e.isBeingForcePushed))) {
                 if (areColliding(e, b)) {
-                    e.hp--;
-                    b.hp--; // yes, bullets have hp
+                    e.damage(1);
+                    b.damage(1); // yes, bullets have hp
                 }
             }
         }  
@@ -220,19 +220,24 @@ void makeEntitiesRandomlyAttack() {
     }
 }
 
-// Returns true if the two entities are colliding
-boolean areColliding(Entity e1, Entity e2) {
-    return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < e1.radius + e2.radius);
-}
-
 // Returns true if the two entities are touching
 boolean areTouching(Entity e1, Entity e2) {
     return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < 1.15 * (e1.radius + e2.radius));
 }
 
+// Returns true if the two entities are colliding
+boolean areColliding(Entity e1, Entity e2) {
+    return (sqrt(sq(abs(e1.coords.x - e2.coords.x)) + sq(abs(e1.coords.y - e2.coords.y))) < e1.radius + e2.radius);
+}
+
 // Returns true if the entity is collding with the bullet
 boolean areColliding(Entity e, Bullet b) {
     return (sqrt(sq(abs(e.coords.x - b.coords.x)) + sq(abs(e.coords.y - b.coords.y))) < e.radius + b.radius);
+}
+
+// Returns true if the entity is collding with the player
+boolean areColliding(Entity e, Player p) {
+    return (sqrt(sq(abs(p.coords.x - e.coords.x)) + sq(abs(p.coords.y - e.coords.y))) < p.radius + e.radius);
 }
 
 // Returns true if the bullet is collding with the player
@@ -287,7 +292,7 @@ void markTargetedEntity() {
         
         // If an entity is grabbed, then it is also targeted
         for (Entity entity : entities) {
-            if (entity.isGrabbed) {
+            if (entity.isGrabbed && !entity.isWall) {
                 entity.isTargeted = true;
                 return;
             }
@@ -304,7 +309,7 @@ void markTargetedEntity() {
         
         for (Entity entity : entities) {
             // Entity must (almost) be visible to be grabbed
-            if (entity.isAlmostOnScreen()) {
+            if (entity.isAlmostOnScreen() && !entity.isWall) {
                 // Angles
                 float anglePlayerEntity = getAngle(player.coords.x, player.coords.y, entity.coords.x, entity.coords.y);
                 float angleDiff = abs(anglePlayerMouse - anglePlayerEntity);

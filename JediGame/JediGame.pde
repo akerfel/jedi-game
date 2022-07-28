@@ -4,6 +4,7 @@ import processing.sound.*; // You need to download this in Processing (Tools -> 
 boolean godMode;
 boolean noBullets;
 int spawnMultiplier;                         // Set to 1 for default behavior. Higher means more frequent enemy spawns.
+boolean debugMode;                           // Overrides some other cheats (i.e. turns on most of them).
 
 // ### Settings ###
 
@@ -51,6 +52,11 @@ int boxHp;
 float chanceBoxSpawn;
 int numStartBoxes;
 
+// Wall
+int wallRadius;
+color wallColor;
+int numStartWalls;
+
 // Bullets
 int bulletRadius;                              // Really wide bullets encourages using enemies as shields (80?).
 float bulletSpeed;
@@ -89,6 +95,12 @@ void setup() {
     godMode = false;
     noBullets = false;
     spawnMultiplier = 1;
+    debugMode = false;
+    if (debugMode) {
+        godMode = true;
+        noBullets = true;
+        spawnMultiplier = 0;
+    }
     
     // ### Settings ###
     
@@ -134,6 +146,11 @@ void setup() {
     chanceBoxSpawn = 0.002;
     numStartBoxes = 4;
     
+    // Walls
+    wallRadius = 150;
+    wallColor = color(80);
+    numStartWalls = 3;
+    
     // Bullets
     chanceStormtrooperAttack = 0.0025;
     bulletRadius = 40;
@@ -173,8 +190,12 @@ void draw() {
 }
 
 void initialLevelSetup() {
-    //standardLevelSetup();
-    spawnOneStromtrooper();
+    if (debugMode) {
+        spawnOneOfEachEntity();
+    }
+    else {
+        standardLevelSetup();
+    }
 }
 
 void resetGame() {

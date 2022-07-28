@@ -6,8 +6,14 @@ void standardLevelSetup() {
     for (int i = 0; i < numStartBoxes; i++) {
         spawnBoxOnEdge();
     }
+    
+    for (int i = 0; i < numStartWalls; i++) {
+        spawnWallOnEdge();
+    }
 }
 
-void spawnOneStromtrooper() {
+void spawnOneOfEachEntity() {
     spawnStormtrooperOnEdge();
+    spawnBoxOnEdge();
+    spawnWallOnEdge();
 }
