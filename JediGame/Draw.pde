@@ -1,6 +1,7 @@
 void drawEverything() {
     background(200);
     drawEntities();
+    drawEnemyPointers();
     drawBullets();
     drawPlayer();
     drawScore();
@@ -90,6 +91,48 @@ void drawEntity(Entity entity) {
         text(entity.hp, entity.coords.x, entity.coords.y);
         textAlign(BASELINE);
     }
+}
+
+// Draws a pointer for each enemy which is off-screen
+void drawEnemyPointers() {
+    for (Entity entity : entities) {
+        if (entity.isEnemy && !entity.isOnScreen()) {
+            drawEntityPointer(entity);    
+        }
+    }
+}
+
+void drawEntityPointer(Entity entity) {
+    fill(entity.rgbColor);
+    int pointerX = int(entity.coords.x);
+    int pointerY = int(entity.coords.y);
+    int edgeOffset = 50;
+    if (pointerX < 0) {
+        pointerX = edgeOffset;
+    }
+    else if (pointerX > width) {
+        pointerX = width - edgeOffset;    
+    }
+    if (pointerY < 0) {
+        pointerY = edgeOffset;
+    }
+    else if (pointerY > height) {
+        pointerY = height - edgeOffset;    
+    }
+    
+    fill(calcEntityColorBasedOnDistanceFromPlayer(entity));
+    
+    circle(pointerX, pointerY, entityPointerRadius * 2);
+}
+
+color calcEntityColorBasedOnDistanceFromPlayer(Entity entity) {
+    float dist = sqrt(sq(player.coords.x - entity.coords.x) + sq(player.coords.y - entity.coords.y));
+    float minDist = width/2;               // If the entity is at this distance, the "maximum closeness color" will be picked
+    float maxDist = width/2 * 2;           // If the entity is at this distance, the "maximum distance color" will be picked
+    float percentageOfMaxDist = (dist - minDist) / maxDist;
+    println(percentageOfMaxDist);
+    
+    return color(255 * (1 - percentageOfMaxDist), 255 * (1 - percentageOfMaxDist), 255 * (1 - percentageOfMaxDist));
 }
 
 void drawBullets() {

@@ -55,6 +55,9 @@ int numStartBoxes;
 int bulletRadius;                              // Really wide bullets encourages using enemies as shields (80?).
 float bulletSpeed;
 
+// Enemy pointers
+int entityPointerRadius;
+
 // ### Dynamic variables ###
 int score;                                    // Number of enemies killed
 Player player;
@@ -136,6 +139,9 @@ void setup() {
     bulletRadius = 40;
     bulletSpeed = 11;
     
+    // Enemy pointers
+    entityPointerRadius = 8;
+    
     // ### Dynamic variables ###
     player = new Player(width/2, height/2);
     entities = new ArrayList<Entity>();
@@ -150,8 +156,7 @@ void setup() {
     wilhelmScreamSound.amp(volume);
     
     // ### Level setup ###
-    spawnInitialEntities();
-    //spawnOneStromtrooper();
+    initialLevelSetup();
 }
 
 // This function is called once per frame/tick
@@ -167,11 +172,16 @@ void draw() {
   }
 }
 
+void initialLevelSetup() {
+    //standardLevelSetup();
+    spawnOneStromtrooper();
+}
+
 void resetGame() {
     score = 0;
     entities.clear();
     bullets.clear();
-    spawnInitialEntities();
+    initialLevelSetup();
     player = new Player(width/2, height/2);
     gameState = GameState.GAMEACTIVE;
     
