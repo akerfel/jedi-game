@@ -100,7 +100,7 @@ void setup() {
     // Binary gameplay choices
     collidingEnemiesShouldDie = false;
     fastEntitiesAreLethal = true;
-    lethalEntitySpeed = 14;
+    lethalEntitySpeed = 9;
     targetedEntityShouldBeHighlighted = false;
     playerCanMove = true;                     
     grabbedEntitiesSameDistFromPlayer = true;
