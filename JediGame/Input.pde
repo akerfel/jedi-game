@@ -51,3 +51,11 @@ void keyReleased() {
     player.setMove(keyCode, false);
     
 }
+
+float translateMouseX() {
+    return mouseX + player.coords.x - width/2; 
+}
+
+float translateMouseY() {
+    return mouseY + player.coords.y - height/2; 
+}

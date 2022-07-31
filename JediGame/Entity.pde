@@ -47,8 +47,8 @@ public class Entity {
         float targetX = 0;
         float targetY = 0;
         
-        float mousePlayerDiffX = mouseX - player.coords.x;
-        float mousePlayerDiffY = mouseY - player.coords.y;
+        float mousePlayerDiffX = translateMouseX() - player.coords.x;
+        float mousePlayerDiffY = translateMouseY() - player.coords.y;
         
         if (grabbedEntitiesSameDistFromPlayer) {
             float resizeFactor = dist_grabbedEntitiesToPlayer / (sqrt(sq(mousePlayerDiffX) + sq(mousePlayerDiffY)));
@@ -100,16 +100,19 @@ public class Entity {
     
     // Returns true if entity is on screen
     boolean isOnScreen() {
-        return coords.x > -radius && coords.x < width + radius && coords.y > -radius && coords.y < height + radius;
+        return coords.x > upperLeftX() - radius && 
+               coords.x < upperLeftX() + width + radius && 
+               coords.y > upperLeftY() - radius && 
+               coords.y < upperLeftY() + height + radius;
     }
     
     // Returns true if entity is or is almost on screen
     boolean isAlmostOnScreen() {
         int extra = 500;
-        return coords.x > -radius - extra && 
-               coords.x < width + radius + extra && 
-               coords.y > -radius - extra && 
-               coords.y < height + radius + extra;
+        return coords.x > upperLeftX() - radius - extra && 
+               coords.x < upperLeftX() + width + radius + extra && 
+               coords.y > upperLeftY() - radius - extra && 
+               coords.y < upperLeftY() + height + radius + extra;
     }
     
     void updatePosition() {
@@ -131,8 +134,8 @@ public class Entity {
         isGrabbed = false;
         isBeingForcePushed = true;
         
-        float mousePlayerDiffX = mouseX - player.coords.x;
-        float mousePlayerDiffY = mouseY - player.coords.y;
+        float mousePlayerDiffX = translateMouseX() - player.coords.x;
+        float mousePlayerDiffY = translateMouseY() - player.coords.y;
         
         float targetX = player.coords.x + 2 * grabbedLengthRatio * mousePlayerDiffX; 
         float targetY = player.coords.y + 2 * grabbedLengthRatio * mousePlayerDiffY; 

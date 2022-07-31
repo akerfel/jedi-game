@@ -1,6 +1,6 @@
 public class Player {
     PVector coords;
-    float radius; // width
+    float radius;
     float speed;
     boolean isLeft, isRight, isUp, isDown;
     private int hp;
@@ -30,6 +30,11 @@ public class Player {
                 yDiff = yDiff * sqrt(0.5);   
             }
             
+            // Move player
+            coords.x += xDiff;
+            coords.y += yDiff;
+            
+            /*
             // Change coords for all relevant objects
             for (Entity entity : entities) {
                 entity.coords.x -= xDiff;
@@ -39,6 +44,7 @@ public class Player {
                 bullet.coords.x -= xDiff;
                 bullet.coords.y -= yDiff;
             }
+            */
         }
     }
     

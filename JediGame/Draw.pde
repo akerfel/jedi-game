@@ -1,9 +1,21 @@
 void drawEverything() {
     background(200);
+    drawTranslatedObjects();
+    drawHud();
+}
+
+// translate() is needed to move the "camera" such that the player in at the center.
+void drawTranslatedObjects() {
+    pushMatrix();
+    translate(width/2 - player.coords.x, height/2 - player.coords.y);
     drawEntities();
-    drawEnemyPointers();
     drawBullets();
     drawPlayer();
+    drawEnemyPointers();
+    popMatrix();
+}
+
+void drawHud() {
     drawScore();
     drawNumOfEntities();
     drawFPS();
@@ -107,17 +119,17 @@ void drawEntityPointer(Entity entity) {
     int pointerX = int(entity.coords.x);
     int pointerY = int(entity.coords.y);
     int edgeOffset = 50;
-    if (pointerX < 0) {
-        pointerX = edgeOffset;
+    if (pointerX < upperLeftX()) {
+        pointerX = upperLeftX() + edgeOffset;
     }
-    else if (pointerX > width) {
-        pointerX = width - edgeOffset;    
+    else if (pointerX > upperLeftX() + width) {
+        pointerX = upperLeftX() + width - edgeOffset;    
     }
-    if (pointerY < 0) {
-        pointerY = edgeOffset;
+    if (pointerY < upperLeftY()) {
+        pointerY = upperLeftY() + edgeOffset;
     }
-    else if (pointerY > height) {
-        pointerY = height - edgeOffset;    
+    else if (pointerY > upperLeftY() + height) {
+        pointerY = upperLeftY() + height - edgeOffset;    
     }
     
     fill(calcEntityColorBasedOnDistanceFromPlayer(entity));

@@ -55,24 +55,32 @@ void spawnBox(int x, int y) {
     entities.add(new Box(x, y));
 }
 
+int upperLeftX() {
+    return int(player.coords.x - width/2);
+}
+
+int upperLeftY() {
+    return int(player.coords.y - height/2);
+}
+
 void spawnStormtrooperOnEdge() {
-    int spawnX = int(random(0, width));
-    int spawnY = int(random(0, height));
+    int spawnX = int(player.coords.x + random(-width/2, width/2));
+    int spawnY = int(player.coords.y + random(-height/2, height/2));
     
     int randWallNum = int(random(0, 4));
     
     switch(randWallNum) {
       case 0: 
-        spawnY = stormtrooperRadius;
+        spawnY = upperLeftY() + stormtrooperRadius;
         break;
       case 1: 
-        spawnY = height - stormtrooperRadius;
+        spawnY = upperLeftY() + height - stormtrooperRadius;
         break;
       case 2: 
-        spawnX = stormtrooperRadius;
+        spawnX = upperLeftX() + stormtrooperRadius;
         break;
       case 3: 
-        spawnX = width - stormtrooperRadius;
+        spawnX = upperLeftX() + width - stormtrooperRadius;
         break;
     }
     
@@ -80,23 +88,23 @@ void spawnStormtrooperOnEdge() {
 }
 
 void spawnBoxOnEdge() {
-    int spawnX = int(random(0, width));
-    int spawnY = int(random(0, height));
+    int spawnX = int(player.coords.x + random(-width/2, width/2));
+    int spawnY = int(player.coords.y + random(-height/2, height/2));
     
     int randWallNum = int(random(0, 4));
     
     switch(randWallNum) {
       case 0: 
-        spawnY = boxRadius;
+        spawnY = upperLeftY() + boxRadius;
         break;
       case 1: 
-        spawnY = height - boxRadius;
+        spawnY = upperLeftY() + height - boxRadius;
         break;
       case 2: 
-        spawnX = boxRadius;
+        spawnX = upperLeftX() + boxRadius;
         break;
       case 3: 
-        spawnX = width - boxRadius;
+        spawnX = upperLeftX() + width - boxRadius;
         break;
     }
     
@@ -294,7 +302,7 @@ void markTargetedEntity() {
         }
         
         // Angles
-        float anglePlayerMouse = getAngle(player.coords.x, player.coords.y, mouseX, mouseY);
+        float anglePlayerMouse = getAngle(player.coords.x, player.coords.y, translateMouseX(), translateMouseY());
         float smallestAngleDiff = 1000;
         Entity targetedEntity = null;
         
@@ -314,7 +322,7 @@ void markTargetedEntity() {
                 }
                 
                 // Distance to mouse
-                PVector mouseCoords = new PVector(mouseX, mouseY);
+                PVector mouseCoords = new PVector(translateMouseX(), translateMouseY());
                 float distEntity = mouseCoords.dist(entity.coords);
                 if (distEntity < distClosestEntity) {
                     distClosestEntity = distEntity;
@@ -341,5 +349,5 @@ void markTargetedEntity() {
 
 
 PVector mouseCoords() {
-    return new PVector(mouseX, mouseY);    
+    return new PVector(translateMouseX(), translateMouseY());    
 }

@@ -86,9 +86,9 @@ void setup() {
     println("height: " + height);
     
     // ### Cheats ###
-    godMode = false;
-    noBullets = false;
-    spawnMultiplier = 1;
+    godMode = true;
+    noBullets = true;
+    spawnMultiplier = 0;
     
     // ### Settings ###
     
