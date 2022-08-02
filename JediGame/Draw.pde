@@ -1,7 +1,7 @@
 void drawEverything() {
     background(200);
     drawTranslatedObjects();
-    drawHud();
+    drawHUD();
 }
 
 // translate() is needed to move the "camera" such that the player in at the center.
@@ -15,7 +15,7 @@ void drawTranslatedObjects() {
     popMatrix();
 }
 
-void drawHud() {
+void drawHUD() {
     drawScore();
     drawNumOfEntities();
     drawFPS();

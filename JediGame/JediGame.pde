@@ -87,7 +87,7 @@ void setup() {
     
     // ### Cheats ###
     godMode = true;
-    noBullets = true;
+    noBullets = false;
     spawnMultiplier = 0;
     
     // ### Settings ###
@@ -135,7 +135,7 @@ void setup() {
     numStartBoxes = 4;
     
     // Bullets
-    chanceStormtrooperAttack = 0.0025;
+    chanceStormtrooperAttack = 0.25;
     bulletRadius = 40;
     bulletSpeed = 11;
     
