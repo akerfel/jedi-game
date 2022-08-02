@@ -86,9 +86,9 @@ void setup() {
     println("height: " + height);
     
     // ### Cheats ###
-    godMode = true;
+    godMode = false;
     noBullets = false;
-    spawnMultiplier = 0;
+    spawnMultiplier = 1;
     
     // ### Settings ###
     
@@ -135,7 +135,7 @@ void setup() {
     numStartBoxes = 4;
     
     // Bullets
-    chanceStormtrooperAttack = 0.25;
+    chanceStormtrooperAttack = 0.0025;
     bulletRadius = 40;
     bulletSpeed = 11;
     
