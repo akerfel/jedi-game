@@ -1,8 +1,7 @@
 import processing.sound.*; // You need to download this in Processing (Tools -> Manage Tools -> Libraries -> Install "Sound")
 
-// The responsibilities of this file include:
-// 1. All global variables are declared and intialized.
-// 2. The draw() method is defined, which is called 60 times per second.
+// In this file, all global variables and declared and initialized,
+// and the draw() method is defined, which is called 60 times per second.
 
 // ### Cheats ###
 boolean godMode;
