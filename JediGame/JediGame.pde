@@ -151,7 +151,7 @@ void setup() {
     stormtrooperSpawnTimer = 10;
 
     // ### Sounds ###
-    laserSound = new SoundFile(this, "retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/;
+    laserSound = new SoundFile(this, "retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/
     laserSound.amp(volume);
     wilhelmScreamSound = new SoundFile(this, "wilhelmScream.wav");
     wilhelmScreamSound.amp(volume);
