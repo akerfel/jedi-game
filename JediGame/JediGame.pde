@@ -82,7 +82,7 @@ public enum GameState {
 }
 GameState gameState;
 
-// This function is called once, when the game is started.
+// This function is called once, when the game starts.
 // It initializes all global variables.
 void setup() {
     fullScreen();
