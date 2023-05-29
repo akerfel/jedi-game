@@ -11,14 +11,14 @@ void saveCurrentScore() {
 
 // If highscores.txt does not exist, create it
 void createHighscoresFileIfMissing() {
-      File f = dataFile("highscores.txt");  // automatically has "data/" in front
-      boolean exists = f.isFile();
-      if (!exists) {
-          // Create "highscores.txt"
-          output = createWriter("data/highscores.txt");
-          output.flush(); // Writes the remaining data to the file
-          output.close(); // Finishes the file
-      }
+    File f = dataFile("highscores.txt");  // automatically has "data/" in front
+    boolean exists = f.isFile();
+    if (!exists) {
+        // Create "highscores.txt"
+        output = createWriter("data/highscores.txt");
+        output.flush(); // Writes the remaining data to the file
+        output.close(); // Finishes the file
+    }
 }
 
 // Load highscores.txt into int arraylist that is returned
@@ -30,8 +30,9 @@ ArrayList<Integer> getHighscores() {
         while ((line = reader.readLine()) != null) {
             highscores.add(int(line));
         }
-    reader.close();
-    } catch (IOException e) {
+        reader.close();
+    }
+    catch (IOException e) {
         e.printStackTrace();
     }
     return highscores;
@@ -41,13 +42,13 @@ ArrayList<Integer> getHighscores() {
 void saveHighscores(ArrayList<Integer> highscores) {
     output = createWriter("data/highscores.txt");
     int i = 0;
-    for (int someScore :highscores) {
+    for (int someScore : highscores) {
         output.println(str(someScore));
         i++;
         if (i >= 10) {
-          break;  
+            break;
         }
     }
     output.flush(); // Writes the remaining data to the file
-    output.close(); // Finishes the file 
+    output.close(); // Finishes the file
 }

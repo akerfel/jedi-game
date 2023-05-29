@@ -7,7 +7,7 @@ void mousePressed() {
             }
         }
     }
-    
+
     if (mouseButton == RIGHT) {
         for (Entity entity : entities) {
             if (entity.isGrabbed) {
@@ -34,7 +34,7 @@ void keyPressed() {
     case GAMEOVER:
         keysPressedGAMEOVER();
         break;
-  }
+    }
 }
 
 void keysPressedGAMEACTIVE() {
@@ -42,20 +42,19 @@ void keysPressedGAMEACTIVE() {
 }
 
 void keysPressedGAMEOVER() {
-  if (key == ENTER || key == 'c' || key == ' ') {
-    resetGame();
-  }
+    if (key == ENTER || key == 'c' || key == ' ') {
+        resetGame();
+    }
 }
 
 void keyReleased() {
     player.setMove(keyCode, false);
-    
 }
 
 float translateMouseX() {
-    return mouseX + player.coords.x - width/2; 
+    return mouseX + player.coords.x - width/2;
 }
 
 float translateMouseY() {
-    return mouseY + player.coords.y - height/2; 
+    return mouseY + player.coords.y - height/2;
 }

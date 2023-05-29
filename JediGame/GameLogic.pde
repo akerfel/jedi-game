@@ -3,14 +3,34 @@ import java.util.Iterator;
 void updateLogic() {
     handleEnemySpawning();
     handleNonEnemySpawning();
-    
-    player.move();    
+
+    player.move();
     updateEntities();
     updateBullets();
-    
+
     removeDeadEntities();
     removeDeadBullets();
     checkIfGameOver();
+}
+
+void initialLevelSetup() {
+    //standardLevelSetup();
+    spawnOneStromtrooper();
+}
+
+void resetGame() {
+    score = 0;
+    entities.clear();
+    bullets.clear();
+    initialLevelSetup();
+    player = new Player(width/2, height/2);
+    gameState = GameState.GAMEACTIVE;
+}
+
+void gameOver() {
+    drawEverything();
+    gameState = GameState.GAMEOVER;
+    saveCurrentScore();  // will only save if actually is new highscore
 }
 
 void updateEntities() {
@@ -34,8 +54,7 @@ void updateBullets() {
 void handleEnemySpawning() {
     if (enemiesSpawnOnIntervall) {
         updateStormtrooperSpawnTimer();
-    }
-    else {
+    } else {
         randomlySpawnEnemies();
     }
 }
@@ -66,48 +85,48 @@ int upperLeftY() {
 void spawnStormtrooperOnEdge() {
     int spawnX = int(player.coords.x + random(-width/2, width/2));
     int spawnY = int(player.coords.y + random(-height/2, height/2));
-    
+
     int randWallNum = int(random(0, 4));
-    
+
     switch(randWallNum) {
-      case 0: 
+    case 0:
         spawnY = upperLeftY() + stormtrooperRadius;
         break;
-      case 1: 
+    case 1:
         spawnY = upperLeftY() + height - stormtrooperRadius;
         break;
-      case 2: 
+    case 2:
         spawnX = upperLeftX() + stormtrooperRadius;
         break;
-      case 3: 
+    case 3:
         spawnX = upperLeftX() + width - stormtrooperRadius;
         break;
     }
-    
+
     spawnStormtrooper(spawnX, spawnY);
 }
 
 void spawnBoxOnEdge() {
     int spawnX = int(player.coords.x + random(-width/2, width/2));
     int spawnY = int(player.coords.y + random(-height/2, height/2));
-    
+
     int randWallNum = int(random(0, 4));
-    
+
     switch(randWallNum) {
-      case 0: 
+    case 0:
         spawnY = upperLeftY() + boxRadius;
         break;
-      case 1: 
+    case 1:
         spawnY = upperLeftY() + height - boxRadius;
         break;
-      case 2: 
+    case 2:
         spawnX = upperLeftX() + boxRadius;
         break;
-      case 3: 
+    case 3:
         spawnX = upperLeftX() + width - boxRadius;
         break;
     }
-    
+
     spawnBox(spawnX, spawnY);
 }
 
@@ -126,7 +145,7 @@ void damageCollidingEntities() {
                 e1.hp--;
                 e2.hp--;
             }
-        }  
+        }
     }
 }
 
@@ -140,8 +159,8 @@ void damageFastCollidingEnemies() {
                     if (e1.isEnemy) e1.hp--;
                     if (e2.isEnemy) e2.hp--;
                 }
-            }    
-        }    
+            }
+        }
     }
 }
 
@@ -168,15 +187,15 @@ void randomlySpawnBoxes() {
 void checkIfGameOver() {
     if (player.isDead()) {
         gameOver();
-        gameState = gameState.GAMEOVER;  
+        gameState = gameState.GAMEOVER;
     }
 }
 
 void removeDeadEntities() {
     Iterator<Entity> it = entities.iterator();
-    while(it.hasNext()) {
+    while (it.hasNext()) {
         if (it.next().isDead()) {
-            it.remove();    
+            it.remove();
             wilhelmScreamSound.play();
             score++;
         }
@@ -185,9 +204,9 @@ void removeDeadEntities() {
 
 void removeDeadBullets() {
     Iterator<Bullet> it = bullets.iterator();
-    while(it.hasNext()) {
+    while (it.hasNext()) {
         if (it.next().isDead()) {
-            it.remove();    
+            it.remove();
         }
     }
 }
@@ -198,7 +217,7 @@ void damagePlayerIfTouchesBullet() {
             player.damage(1);
             bullet.hp--; // yes, bullets have hp
         }
-    }  
+    }
 }
 
 void damageEntitiesWhoTouchBullets() {
@@ -210,20 +229,20 @@ void damageEntitiesWhoTouchBullets() {
                     b.hp--; // yes, bullets have hp
                 }
             }
-        }  
-    }  
+        }
+    }
 }
 
 void updateBulletPositions() {
     for (Bullet bullet : bullets) {
-        bullet.updatePosition();    
+        bullet.updatePosition();
     }
 }
 
 void makeEntitiesRandomlyAttack() {
     for (Entity entity : entities) {
         if (!entity.isGrabbed && random(0, 1) < entity.attackChance && entity instanceof Enemy) {
-            ((Enemy) entity).attack();    
+            ((Enemy) entity).attack();
         }
     }
 }
@@ -251,7 +270,7 @@ boolean areColliding(Player p, Bullet b) {
 void updateEntityPositions() {
     setAllEntitiesUntargeted();
     markTargetedEntity();
-    
+
     for (Entity entity : entities) {
         if (entity.isGrabbed) {
             entity.updateGrabbedVelocity();
@@ -280,7 +299,7 @@ float getAngle(float x1, float y1, float x2, float y2) {
 Entity getTargetedEntity() {
     for (Entity entity : entities) {
         if (entity.isTargeted) {
-            return entity;    
+            return entity;
         }
     }
     return null;
@@ -292,7 +311,7 @@ Entity getTargetedEntity() {
 //    e.g. if one entity is "right behind" another enemy, then the angle should not matter.
 void markTargetedEntity() {
     if (!entities.isEmpty()) {
-        
+
         // If an entity is grabbed, then it is also targeted
         for (Entity entity : entities) {
             if (entity.isGrabbed) {
@@ -300,16 +319,16 @@ void markTargetedEntity() {
                 return;
             }
         }
-        
+
         // Angles
         float anglePlayerMouse = getAngle(player.coords.x, player.coords.y, translateMouseX(), translateMouseY());
         float smallestAngleDiff = 1000;
         Entity targetedEntity = null;
-        
+
         // Distance to mouse
         Entity closestEntity = null;
         float distClosestEntity = 1000000;
-        
+
         for (Entity entity : entities) {
             // Entity must (almost) be visible to be grabbed
             if (entity.isAlmostOnScreen()) {
@@ -320,7 +339,7 @@ void markTargetedEntity() {
                     smallestAngleDiff = angleDiff;
                     targetedEntity = entity;
                 }
-                
+
                 // Distance to mouse
                 PVector mouseCoords = new PVector(translateMouseX(), translateMouseY());
                 float distEntity = mouseCoords.dist(entity.coords);
@@ -333,14 +352,14 @@ void markTargetedEntity() {
         if (targetedEntity == null) {
             return;
         }
-        
+
         // Distance to mouse
         if (distClosestEntity < 50) {
             targetedEntity = closestEntity;
             targetedEntity.isTargeted = true;
             return;
         }
-        
+
         // Angles
         targetedEntity.isTargeted = true;
     }
@@ -349,5 +368,5 @@ void markTargetedEntity() {
 
 
 PVector mouseCoords() {
-    return new PVector(translateMouseX(), translateMouseY());    
+    return new PVector(translateMouseX(), translateMouseY());
 }
