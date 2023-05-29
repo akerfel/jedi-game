@@ -7,7 +7,7 @@ void mousePressed() {
             }
         }
     }
-    
+
     if (mouseButton == RIGHT) {
         for (Entity entity : entities) {
             if (entity.isGrabbed) {
@@ -34,7 +34,7 @@ void keyPressed() {
     case GAMEOVER:
         keysPressedGAMEOVER();
         break;
-  }
+    }
 }
 
 void keysPressedGAMEACTIVE() {
@@ -42,12 +42,11 @@ void keysPressedGAMEACTIVE() {
 }
 
 void keysPressedGAMEOVER() {
-  if (key == ENTER || key == 'c' || key == ' ') {
-    resetGame();
-  }
+    if (key == ENTER || key == 'c' || key == ' ') {
+        resetGame();
+    }
 }
 
 void keyReleased() {
     player.setMove(keyCode, false);
-    
 }

@@ -1,5 +1,8 @@
 import processing.sound.*; // You need to download this in Processing (Tools -> Add tool -> Libraries -> Install "Sound")
 
+// In this file, all global variables and declared and initialized,
+// and the draw() method is defined, which is called 60 times per second.
+
 // ### Cheats ###
 boolean godMode;
 boolean noBullets;
@@ -20,8 +23,8 @@ boolean playerCanMove;                        // Default: true.
 boolean grabbedEntitiesSameDistFromPlayer;    // I think I prefer true. If true, grabbed entities will be at a set distance from player.
 float dist_grabbedEntitiesToPlayer;           // Only used if grabbedEntitiesSameDistFromPlayer is true.
 boolean onlyForceControlledEnemiesDieFromBullets; // I prefer true, since otherwise the player can easily get points by just
-                                                  //  letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
-boolean enemiesSpawnOnIntervall;              // Default: true. If false, each frame will have chanceStormtrooperSpawn of spawning an enemy                
+//  letting enemies kill each other. ForceControlled = pushed/thrown/grabbed.
+boolean enemiesSpawnOnIntervall;              // Default: true. If false, each frame will have chanceStormtrooperSpawn of spawning an enemy
 
 // Player
 int playerSpeed;
@@ -29,8 +32,8 @@ int playerRadius;
 
 // Force powers
 float forcePushInitialSpeed;                  // Default 50? Higher values means stronger push
-float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_to_mouse. Set 1 for entity to be at mouse position. 
-                                              // Only used if grabbedEntitiesSameDistFromPlayer is false.
+float grabbedLengthRatio;                     // = grabbed_to_player / grabbed_to_mouse. Set 1 for entity to be at mouse position.
+// Only used if grabbedEntitiesSameDistFromPlayer is false.
 
 // Entities
 float deacellerationFactor;                   // Between 0 and 1. Lower values means entities stop faster.
@@ -63,18 +66,16 @@ int score;                                    // Number of enemies killed
 Player player;
 ArrayList<Entity> entities;
 ArrayList<Bullet> bullets;
-PrintWriter output;     
+PrintWriter output;
 int stormtrooperSpawnTimer;
 
 // ### Sounds ###
 SoundFile laserSound;
-SoundFile wilhelmScreamSound; 
+SoundFile wilhelmScreamSound;
 
 // ### GamesState ###
 public enum GameState {
-  GAMEOVER,
-  STARTSCREEN,
-  GAMEACTIVE
+    GAMEOVER, STARTSCREEN, GAMEACTIVE
 }
 GameState gameState;
 
@@ -82,113 +83,92 @@ GameState gameState;
 void setup() {
     fullScreen();
     println("width: " + width);
-    
+
     println("height: " + height);
-    
+
     // ### Cheats ###
     godMode = false;
     noBullets = false;
     spawnMultiplier = 1;
-    
+
     // ### Settings ###
-    
+
     // Basic
     volume = 0.05;
     muteSound = false;
     if (muteSound) volume = 0;
-    
+
     // Binary gameplay choices
     collidingEnemiesShouldDie = false;
     fastEntitiesAreLethal = true;
     lethalEntitySpeed = 9;
     targetedEntityShouldBeHighlighted = false;
-    playerCanMove = true;                     
+    playerCanMove = true;
     grabbedEntitiesSameDistFromPlayer = true;
     dist_grabbedEntitiesToPlayer = 150;
     onlyForceControlledEnemiesDieFromBullets = true;
     enemiesSpawnOnIntervall = true;
-    
+
     // Player
     playerSpeed = 5;
     playerRadius = 15;
-    
+
     // Force powers
     grabbedLengthRatio = 1;
     forcePushInitialSpeed = 93;
-    
+
     // Entities
     deacellerationFactor = 0.94;
-    
+
     // Stormtroopers
-    stormtrooperSpawnTimerInterval = 50;   
+    stormtrooperSpawnTimerInterval = 50;
     stormtrooperRadius = 30;
     stormtrooperColor = color(255);
     stormtrooperHp = 1;
     chanceStormtrooperSpawn = 0.03;
-    numStartStormtroopers = 2;   
-    
+    numStartStormtroopers = 2;
+
     // Boxes
     boxRadius = 100;
     boxColor = color(139, 69, 19);
     boxHp = 30;
     chanceBoxSpawn = 0.002;
     numStartBoxes = 4;
-    
+
     // Bullets
     chanceStormtrooperAttack = 0.0025;
     bulletRadius = 40;
     bulletSpeed = 11;
-    
+
     // Enemy pointers
     entityPointerRadius = 8;
-    
+
     // ### Dynamic variables ###
     player = new Player(width/2, height/2);
     entities = new ArrayList<Entity>();
     bullets = new ArrayList<Bullet>();
     gameState = GameState.GAMEACTIVE;
     stormtrooperSpawnTimer = 10;
-    
+
     // ### Sounds ###
     laserSound = new SoundFile(this, "retroBlasterSound.wav"); // https://freesound.org/people/JavierZumer/sounds/257232/;
     laserSound.amp(volume);
-    wilhelmScreamSound = new SoundFile(this, "wilhelmScream.wav"); 
+    wilhelmScreamSound = new SoundFile(this, "wilhelmScream.wav");
     wilhelmScreamSound.amp(volume);
-    
+
     // ### Level setup ###
     initialLevelSetup();
 }
 
 // This function is called once per frame/tick
 void draw() {
-  switch(gameState) {
+    switch(gameState) {
     case GAMEACTIVE:
-      updateLogic();
-      drawEverything();
-      break;
+        updateLogic();
+        drawEverything();
+        break;
     case GAMEOVER:
-      drawGameOver();
-      break;
-  }
-}
-
-void initialLevelSetup() {
-    //standardLevelSetup();
-    spawnOneStromtrooper();
-}
-
-void resetGame() {
-    score = 0;
-    entities.clear();
-    bullets.clear();
-    initialLevelSetup();
-    player = new Player(width/2, height/2);
-    gameState = GameState.GAMEACTIVE;
-    
-}
-
-void gameOver() {
-    drawEverything();
-    gameState = GameState.GAMEOVER; 
-    saveCurrentScore();  // will only save if actually is new highscore
+        drawGameOver();
+        break;
+    }
 }
